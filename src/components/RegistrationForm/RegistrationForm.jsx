@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Form, Button } from 'react-bootstrap';
-
+import axios from 'axios';
 const RegistrationForm = () => {
+    const [first_name, setFirstName] = useState('');
+    const [last_name, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirm_password, setConfirmPassword] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [gender, setGender] = useState('');
+
+    function userRegistrationHandler(e) {
+        e.preventDefault();
+        const userRegistrationData = {
+            first_name,
+            last_name,
+            email,
+            password,
+            confirm_password,
+            birthday,
+            gender,
+        };
+        axios
+            .post('http://localhost:8000/api/register/', userRegistrationData)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                if (error.response) console.log(error.response.data);
+            });
+    }
     return (
         <div className="register-main">
             <h3>Register Now</h3>
             <hr />
-            <Form>
+            <Form onSubmit={userRegistrationHandler}>
                 <Form.Row>
                     <Form.Group as={Col} className="mb-0">
                         <Form.Label className="mb-0">First Name</Form.Label>
@@ -15,6 +43,7 @@ const RegistrationForm = () => {
                             placeholder="First Name"
                             name="first-name"
                             required
+                            onChange={(e) => setFirstName(e.target.value)}
                         />
                     </Form.Group>
                     <Form.Group as={Col} className="mb-0">
@@ -24,6 +53,7 @@ const RegistrationForm = () => {
                             placeholder="Last Name"
                             name="last-name"
                             required
+                            onChange={(e) => setLastName(e.target.value)}
                         />
                     </Form.Group>
                 </Form.Row>
@@ -35,6 +65,7 @@ const RegistrationForm = () => {
                             placeholder="Email"
                             name="email"
                             required
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Form.Group>
                 </Form.Row>
@@ -46,6 +77,7 @@ const RegistrationForm = () => {
                             placeholder="Password"
                             name="password"
                             required
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </Form.Group>
                 </Form.Row>
@@ -57,8 +89,9 @@ const RegistrationForm = () => {
                         <Form.Control
                             type="password"
                             placeholder="Confirm Password"
-                            name="password1"
+                            name="confirm_password"
                             required
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </Form.Group>
                 </Form.Row>
@@ -71,6 +104,7 @@ const RegistrationForm = () => {
                             name="birthday"
                             max={new Date().toISOString().split('T')[0]}
                             required
+                            onChange={(e) => setBirthday(e.target.value)}
                         />
                     </Form.Group>
                 </Form.Row>
@@ -84,6 +118,7 @@ const RegistrationForm = () => {
                         value="Male"
                         name="gender"
                         required
+                        onChange={(e) => setGender(e.currentTarget.value)}
                     />
                     <Form.Check
                         inline

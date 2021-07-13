@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Dashboard from './components/Dashboard/Dashboard';
 
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Search from './components/Search/Search';
@@ -9,7 +10,7 @@ function App() {
             <BrowserRouter>
                 <Switch>
                     <Route path="/dashboard">
-                        <HomeScreen isLoggedIn={true} />
+                        <Dashboard />
                     </Route>
                     <Route path="/settings">
                         <h1>settings</h1>

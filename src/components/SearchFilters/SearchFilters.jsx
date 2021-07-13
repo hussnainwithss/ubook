@@ -10,34 +10,46 @@ const SearchFilters = ({ cities, educations, works }) => {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Hometown</Form.Label>
-                        <Form.Control as="select" name="city">
-                            <option selected disabled>
-                                Select City
-                            </option>
+                        <Form.Control
+                            as="select"
+                            name="city"
+                            defaultValue="Select City"
+                        >
+                            <option disabled>Select City</option>
                             {cities.map((city, index) => (
-                                <option value={city}>{city}</option>
+                                <option value={city} key={city}>
+                                    {city}
+                                </option>
                             ))}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Hometown</Form.Label>
-                        <Form.Control as="select" name="education">
-                            <option selected disabled>
-                                Select Education
-                            </option>
+                        <Form.Control
+                            as="select"
+                            name="education"
+                            defaultValue="Select Education"
+                        >
+                            <option disabled>Select Education</option>
                             {educations.map((education, index) => (
-                                <option value={education}>{education}</option>
+                                <option value={education} key={education}>
+                                    {education}
+                                </option>
                             ))}
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Hometown</Form.Label>
-                        <Form.Control as="select" name="work">
-                            <option selected disabled>
-                                Select Work
-                            </option>
+                        <Form.Control
+                            as="select"
+                            name="work"
+                            defaultValue="Select Work"
+                        >
+                            <option disabled>Select Work</option>
                             {works.map((work, index) => (
-                                <option value={work}>{work}</option>
+                                <option value={work} key={work}>
+                                    {work}
+                                </option>
                             ))}
                         </Form.Control>
                     </Form.Group>
@@ -77,13 +89,18 @@ const SearchFilters = ({ cities, educations, works }) => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Relationship Status</Form.Label>
-                        <Form.Control as="select" name="work">
-                            <option selected disabled>
-                                Select Relationship Status
-                            </option>
+                        <Form.Control
+                            as="select"
+                            name="work"
+                            defaultValue="Select Relationship Status"
+                        >
+                            <option disabled>Select Relationship Status</option>
                             {RELATIONSHIP_STATUES.map(
                                 (relationship_status, index) => (
-                                    <option value={relationship_status}>
+                                    <option
+                                        value={relationship_status}
+                                        key={relationship_status}
+                                    >
                                         {relationship_status}
                                     </option>
                                 )

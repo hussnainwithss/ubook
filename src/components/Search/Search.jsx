@@ -56,7 +56,6 @@ const Search = () => {
     }
     let query = useQuery();
     const { cities, educations, works } = getSearchFilters();
-    console.log(getSearchFilters());
     return (
         <div>
             <NavBar isLoggedIn={true} />
