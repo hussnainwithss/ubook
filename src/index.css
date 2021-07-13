@@ -11,3 +11,56 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar-color {
+ background-color:   #3b5998;
+}
+.white-text{
+  color:white !important;
+}
+
+.no-text-decoration{
+  text-decoration: none;
+}
+.login-bottom-text {
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.register-main{
+  padding-top: 50px;
+}
+
+.welcome-main{
+  padding-top:100px;
+}
+
+.logo{
+  padding: 4px 20px;
+}
+
+.profile-badge-image {
+  width: 40px;
+	height: 40px;
+  margin-right:5px;
+}
+
+.profile-card-image{
+  width: 70px;
+	height: 70px;
+  margin-right:5px;
+}
+
+
+.black-text{
+  color:black;
+}
+
+.black-text:hover{
+  text-decoration: none;
+  color:black;
+}
+
+.search-filters{
+  padding-top:55px;
+}
