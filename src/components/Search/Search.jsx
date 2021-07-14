@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
 import { Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../NavBar/NavBar';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import SearchFilters from '../SearchFilters/SearchFilters';
-
-const SEARCH_RESULTS = [
-    {
-        name: 'Hussnain Ahmad',
-        hometown: 'Gujranwala',
-        gender: 'Male',
-        age: '22',
-        education: 'LUMS',
-    },
-    {
-        name: 'Hussnain Ahmad',
-        hometown: 'Lahore',
-        gender: 'Male',
-        age: '20',
-        work: 'Arbisoft',
-    },
-    {
-        name: 'Test User',
-        hometown: 'Islamabad',
-        gender: 'Male',
-        age: '20',
-        relationship_status: 'Single',
-    },
-];
+import useQuery from '../../utils/useQuery';
 
 const Search = () => {
-    let query_params = useQuery();
-    let search_param = query_params.get('search');
-    const [searchResults, setSearchResults] = useState(null);
+    const [queryParams, setQueryParams] = useState(useQuery());
+    const [searchResults, setSearchResults] = useState([]);
+    const [hometownFilters, setHometownFilters] = useState([]);
+    const [educationFilters, setEducationFilters] = useState([]);
+    const [workFilters, setWorkFilters] = useState([]);
+    const search_param = queryParams.get('search');
+
+    const getFiltersFromData = (filter_name, data) => {
+        return data
+            .map((data_obj) => {
+                if (filter_name in data_obj.profile)
+                    return data_obj.profile[filter_name];
+                return '';
+            })
+            .filter((value, index, original_array) => {
+                return original_array.indexOf(value) === index && value !== '';
+            });
+    };
+
     const getSearchResults = () => {
         const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
         const requestData = {
@@ -44,40 +36,26 @@ const Search = () => {
                 search: search_param,
             },
         };
+        queryParams.forEach((value, key) => {
+            requestData.params[key] = value;
+        });
+        console.log(requestData);
         axios
             .get('http://localhost:8000/api/search/', requestData)
             .then((response) => {
-                console.log(response.data);
-                setSearchResults(searchResults);
+                setSearchResults(response.data);
+                setWorkFilters(getFiltersFromData('work', response.data));
+                setEducationFilters(
+                    getFiltersFromData('education', response.data)
+                );
+                setHometownFilters(
+                    getFiltersFromData('hometown', response.data)
+                );
             });
     };
-    useEffect(getSearchResults, [searchResults, search_param]);
-    function useQuery() {
-        return new URLSearchParams(useLocation().search);
-    }
-    const getSearchFilters = () => {
-        let search_filters = {};
-        search_filters['works'] = SEARCH_RESULTS.filter((search_result) => {
-            return 'work' in search_result;
-        });
-        search_filters['works'] = SEARCH_RESULTS.map((search_result) => {
-            if ('work' in search_result) return search_result.work;
-        }).filter((search_result) => {
-            return search_result !== undefined;
-        });
-        search_filters['educations'] = SEARCH_RESULTS.map((search_result) => {
-            if ('education' in search_result) return search_result.education;
-        }).filter((search_result) => {
-            return search_result !== undefined;
-        });
-        search_filters['cities'] = SEARCH_RESULTS.map((search_result) => {
-            if ('hometown' in search_result) return search_result.hometown;
-        }).filter((search_result) => {
-            return search_result !== undefined;
-        });
-        return search_filters;
-    };
-    const { cities, educations, works } = getSearchFilters();
+
+    useEffect(getSearchResults, [queryParams]);
+
     return (
         <div>
             <NavBar isLoggedIn={true} />
@@ -85,9 +63,13 @@ const Search = () => {
                 <Row>
                     <Col md="4">
                         <SearchFilters
-                            cities={cities}
-                            educations={educations}
-                            works={works}
+                            hometownFilters={hometownFilters && hometownFilters}
+                            educationFilters={
+                                educationFilters && educationFilters
+                            }
+                            workFilters={workFilters && workFilters}
+                            setQueryParams={setQueryParams}
+                            searchParams={queryParams.get('search')}
                         />
                     </Col>
                     <Col md="8">
@@ -98,21 +80,23 @@ const Search = () => {
                         </h4>
                         <div>
                             {searchResults &&
-                                searchResults.map((user_profile, _) => (
+                                searchResults.map((user, _) => (
                                     <ProfileCard
-                                        name={user_profile.firstname}
-                                        hometown={user_profile.profile.hometown}
-                                        age={user_profile.profile__age}
-                                        gender={user_profile.profile.gender}
+                                        id={user.id}
+                                        picture={user.profile.profile_picture}
+                                        name={user.first_name}
+                                        hometown={user.profile.hometown}
+                                        age={user.profile__age}
+                                        gender={user.profile.gender}
                                         extras={
-                                            user_profile.education
-                                                ? user_profile.profile.education
-                                                : user_profile.profile.work
-                                                ? user_profile.profile.work
-                                                : user_profile.profile
+                                            user.education
+                                                ? user.profile.education
+                                                : user.profile.work
+                                                ? user.profile.work
+                                                : user.profile
                                                       .relationship_status
                                         }
-                                        key={`${user_profile.profile.name}-extras-${user_profile.profile__age}`}
+                                        key={`${user.first_name}-id-${user.id}`}
                                     />
                                 ))}
                         </div>

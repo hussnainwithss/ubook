@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const CreatePostPrompt = ({ setNewPost }) => {
     const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
-    const [content, setContent] = useState(null);
+    const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
     function createPostHandler(e) {
         e.preventDefault();

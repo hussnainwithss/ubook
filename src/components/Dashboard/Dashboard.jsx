@@ -28,7 +28,7 @@ const Dashboard = () => {
                 console.log(posts);
             });
     };
-    useEffect(getPostsData, [posts, newPost]);
+    useEffect(getPostsData, [newPost]);
 
     return (
         <div>

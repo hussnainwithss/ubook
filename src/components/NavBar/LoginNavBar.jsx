@@ -7,9 +7,7 @@ let LoginNavBar = () => {
     return (
         <Navbar className="navbar-color d-flex justify-content-between">
             <Link to="/dashboard">
-                <Navbar.Brand href="/dashboard" className="white-text ">
-                    UBook
-                </Navbar.Brand>
+                <Navbar.Brand className="white-text ">UBook</Navbar.Brand>
             </Link>
             <Login />
         </Navbar>

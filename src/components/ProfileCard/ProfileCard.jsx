@@ -2,12 +2,14 @@ import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const ProfileCard = ({ picture, name, hometown, age, gender, extras }) => {
-    console.log({ picture, name, hometown, age, gender, extras });
+const ProfileCard = ({ id, picture, name, hometown, age, gender, extras }) => {
     return (
         <Card className="mb-2">
             <Card.Body>
-                <Link to="/search" className="no-text-decoration black-text">
+                <Link
+                    to={`/profile/${id}`}
+                    className="no-text-decoration black-text"
+                >
                     <Row>
                         <Col className="col-auto">
                             <Image

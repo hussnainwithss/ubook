@@ -1,22 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Row, Col, Form, Button } from 'react-bootstrap';
 
 const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
-const SearchFilters = ({ cities, educations, works }) => {
+const SearchFilters = ({
+    workFilters,
+    educationFilters,
+    hometownFilters,
+    setQueryParams,
+    searchParams,
+}) => {
+    const [hometown, setHomeTown] = useState('');
+    const [work, setWork] = useState('');
+    const [education, setEducation] = useState('');
+    const [gender, setGender] = useState('');
+    const [realtionshipStatus, setRelationshipStatus] = useState('');
+    const initialQueryParams = new URLSearchParams({
+        search: searchParams,
+    });
+    const searchFormSubmitHandler = (e) => {
+        e.preventDefault();
+        const updatedQueryParams = new URLSearchParams(initialQueryParams);
+        if (hometown) updatedQueryParams.append('hometown', hometown);
+        if (work) updatedQueryParams.append('work', work);
+        if (education) updatedQueryParams.append('education', education);
+        if (gender) updatedQueryParams.append('gender', gender);
+        if (realtionshipStatus)
+            updatedQueryParams.append(
+                'relationship_status',
+                realtionshipStatus
+            );
+        setQueryParams(updatedQueryParams);
+    };
+    const searchFormResetHandler = (e) => {
+        setQueryParams(initialQueryParams);
+    };
     return (
         <Card>
             <Card.Header>Search Filters</Card.Header>
             <Card.Body>
-                <Form>
+                <Form
+                    onSubmit={searchFormSubmitHandler}
+                    onReset={searchFormResetHandler}
+                >
                     <Form.Group className="mb-3">
                         <Form.Label>Hometown</Form.Label>
                         <Form.Control
                             as="select"
                             name="hometown"
-                            defaultValue="Select City"
+                            defaultValue={
+                                hometown === '' ? 'Select City' : hometown
+                            }
+                            onChange={(e) => setHomeTown(e.target.value)}
                         >
                             <option disabled>Select City</option>
-                            {cities.map((city, index) => (
+                            {hometownFilters.map((city, index) => (
                                 <option value={city} key={city}>
                                     {city}
                                 </option>
@@ -28,10 +65,15 @@ const SearchFilters = ({ cities, educations, works }) => {
                         <Form.Control
                             as="select"
                             name="education"
-                            defaultValue="Select Education"
+                            defaultValue={
+                                education === ''
+                                    ? 'Select Education'
+                                    : education
+                            }
+                            onChange={(e) => setEducation(e.target.value)}
                         >
                             <option disabled>Select Education</option>
-                            {educations.map((education, index) => (
+                            {educationFilters.map((education, index) => (
                                 <option value={education} key={education}>
                                     {education}
                                 </option>
@@ -43,10 +85,11 @@ const SearchFilters = ({ cities, educations, works }) => {
                         <Form.Control
                             as="select"
                             name="work"
-                            defaultValue="Select Work"
+                            defaultValue={work === '' ? 'Select Work' : work}
+                            onChange={(e) => setWork(e.target.value)}
                         >
                             <option disabled>Select Work</option>
-                            {works.map((work, index) => (
+                            {workFilters.map((work, index) => (
                                 <option value={work} key={work}>
                                     {work}
                                 </option>
@@ -65,6 +108,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                                     type="radio"
                                     value="Male"
                                     name="gender"
+                                    onChange={(e) => setGender(e.target.value)}
                                 />
                             </Col>
                             <Col className="col-auto">
@@ -74,6 +118,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                                     type="radio"
                                     value="Female"
                                     name="gender"
+                                    onChange={(e) => setGender(e.target.value)}
                                 />
                             </Col>
                             <Col className="col-auto">
@@ -83,6 +128,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                                     type="radio"
                                     value="Others"
                                     name="gender"
+                                    onChange={(e) => setGender(e.target.value)}
                                 />
                             </Col>
                         </Row>
@@ -92,7 +138,14 @@ const SearchFilters = ({ cities, educations, works }) => {
                         <Form.Control
                             as="select"
                             name="relationship_status"
-                            defaultValue="Select Relationship Status"
+                            defaultValue={
+                                realtionshipStatus === ''
+                                    ? 'Select Relationship Status'
+                                    : realtionshipStatus
+                            }
+                            onChange={(e) =>
+                                setRelationshipStatus(e.target.value)
+                            }
                         >
                             <option disabled>Select Relationship Status</option>
                             {RELATIONSHIP_STATUES.map(
