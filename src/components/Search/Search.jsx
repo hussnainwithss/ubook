@@ -39,7 +39,6 @@ const Search = () => {
         queryParams.forEach((value, key) => {
             requestData.params[key] = value;
         });
-        console.log(requestData);
         axios
             .get('http://localhost:8000/api/search/', requestData)
             .then((response) => {
@@ -74,31 +73,27 @@ const Search = () => {
                     </Col>
                     <Col md="8">
                         <h4>
-                            {`${
-                                searchResults && searchResults.length
-                            } Search Result(s) for ${search_param}`}
+                            {`${searchResults.length} Search Result(s) for ${search_param}`}
                         </h4>
                         <div>
-                            {searchResults &&
-                                searchResults.map((user, _) => (
-                                    <ProfileCard
-                                        id={user.id}
-                                        picture={user.profile.profile_picture}
-                                        name={user.first_name}
-                                        hometown={user.profile.hometown}
-                                        age={user.profile__age}
-                                        gender={user.profile.gender}
-                                        extras={
-                                            user.education
-                                                ? user.profile.education
-                                                : user.profile.work
-                                                ? user.profile.work
-                                                : user.profile
-                                                      .relationship_status
-                                        }
-                                        key={`${user.first_name}-id-${user.id}`}
-                                    />
-                                ))}
+                            {searchResults.map((user, _) => (
+                                <ProfileCard
+                                    id={user.id}
+                                    picture={user.profile.profile_picture}
+                                    name={user.first_name}
+                                    hometown={user.profile.hometown}
+                                    age={user.profile__age}
+                                    gender={user.profile.gender}
+                                    extras={
+                                        user.education
+                                            ? user.profile.education
+                                            : user.profile.work
+                                            ? user.profile.work
+                                            : user.profile.relationship_status
+                                    }
+                                    key={`${user.first_name}-id-${user.id}`}
+                                />
+                            ))}
                         </div>
                     </Col>
                 </Row>

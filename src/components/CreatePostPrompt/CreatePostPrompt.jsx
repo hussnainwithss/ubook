@@ -5,7 +5,8 @@ import axios from 'axios';
 const CreatePostPrompt = ({ setNewPost }) => {
     const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
     const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState('');
+
     function createPostHandler(e) {
         e.preventDefault();
         const postData = new FormData();
@@ -24,14 +25,13 @@ const CreatePostPrompt = ({ setNewPost }) => {
         axios
             .post('http://localhost:8000/api/post/', postData, headers)
             .then((response) => {
-                console.log(response);
                 setNewPost(response.data);
             })
             .catch((error) => {
                 if (error.response) console.log(error.response.data);
             });
-        setContent(null);
-        setImage(null);
+        setContent('');
+        setImage('');
     }
     return (
         <Card className="mb-5">

@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Image } from 'react-bootstrap';
 
 const Post = ({ props }) => {
-    console.log(props);
     return (
         <Card className="mb-3">
             {props.feed_type === 'register' ? (

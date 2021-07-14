@@ -89,6 +89,9 @@ code {
   max-height: 400px;
   object-fit:cover;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) inset;
+  margin:0;
+  padding:0;
+  border:0;
 }
 
 .profile-image{
@@ -116,5 +119,10 @@ code {
 .profile-name{
   font-size:30px;
   color:white;
-  padding-left: 20px ;
+}
+
+
+.picture-upload-button, .picture-upload-button:hover,.picture-upload-button:hover, .picture-upload-button:focus {
+ box-shadow: none;
+ outline:none;
 }
