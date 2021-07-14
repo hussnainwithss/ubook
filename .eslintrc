@@ -1,8 +1,10 @@
 {
   "extends": ["react-app", "react-app/jest"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier","react-hooks"],
   "rules": {
     "prettier/prettier": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn" 
   }
 }

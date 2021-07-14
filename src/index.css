@@ -83,3 +83,38 @@ code {
 .post-textarea::placeholder{
 	font-size: 25px;
 }
+
+.cover-image{
+  min-height: 400px;
+  max-height: 400px;
+  object-fit:cover;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) inset;
+}
+
+.profile-image{
+  width:152px;
+  height:152px;
+}
+.parent{
+  position: relative;
+  top:0;
+  left:0;
+}
+
+.image1{
+  position: relative;
+  top:0;
+  left:0;
+}
+
+.image2{
+  position: absolute;
+  top:300px;
+  left:300px;
+}
+
+.profile-name{
+  font-size:30px;
+  color:white;
+  padding-left: 20px ;
+}

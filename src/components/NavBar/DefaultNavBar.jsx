@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, Row, Col, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import ProfileBadge from '../ProfileBadge/ProfileBadge';
 let DefaultSearchBar = () => {
@@ -7,9 +8,11 @@ let DefaultSearchBar = () => {
         <Navbar className="navbar-color d-flex white-text justify-content-between">
             <Row>
                 <Col md="3">
-                    <Navbar.Brand href="/#" className="white-text ">
-                        UBook
-                    </Navbar.Brand>
+                    <Link to="/dashboard">
+                        <Navbar.Brand className="white-text ">
+                            UBook
+                        </Navbar.Brand>
+                    </Link>
                 </Col>
                 <Col md="9">
                     <SearchBar />

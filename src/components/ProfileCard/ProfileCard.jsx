@@ -3,6 +3,7 @@ import { Card, Image, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const ProfileCard = ({ picture, name, hometown, age, gender, extras }) => {
+    console.log({ picture, name, hometown, age, gender, extras });
     return (
         <Card className="mb-2">
             <Card.Body>

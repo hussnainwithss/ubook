@@ -12,7 +12,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                         <Form.Label>Hometown</Form.Label>
                         <Form.Control
                             as="select"
-                            name="city"
+                            name="hometown"
                             defaultValue="Select City"
                         >
                             <option disabled>Select City</option>
@@ -24,7 +24,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Hometown</Form.Label>
+                        <Form.Label>Education</Form.Label>
                         <Form.Control
                             as="select"
                             name="education"
@@ -39,7 +39,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Hometown</Form.Label>
+                        <Form.Label>Work</Form.Label>
                         <Form.Control
                             as="select"
                             name="work"
@@ -91,7 +91,7 @@ const SearchFilters = ({ cities, educations, works }) => {
                         <Form.Label>Relationship Status</Form.Label>
                         <Form.Control
                             as="select"
-                            name="work"
+                            name="relationship_status"
                             defaultValue="Select Relationship Status"
                         >
                             <option disabled>Select Relationship Status</option>

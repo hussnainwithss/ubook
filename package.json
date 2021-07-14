@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react-hooks": "^4.2.1-alpha-464f27572-20210713",
     "husky": "^7.0.1",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1"
