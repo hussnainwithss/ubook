@@ -47,9 +47,8 @@ const Search = () => {
         axios
             .get('http://localhost:8000/api/search/', requestData)
             .then((response) => {
-                setSearchResults(searchResults);
                 console.log(response.data);
-                console.log(searchResults);
+                setSearchResults(searchResults);
             });
     };
     useEffect(getSearchResults, [searchResults, search_param]);
@@ -99,11 +98,9 @@ const Search = () => {
                         </h4>
                         <div>
                             {searchResults &&
-                                searchResults.map((user_profile, index) => {
-                                    console.log(user_profile);
-                                    {
-                                        /* <ProfileCard
-                                        username={user_profile.firstname}
+                                searchResults.map((user_profile, _) => (
+                                    <ProfileCard
+                                        name={user_profile.firstname}
                                         hometown={user_profile.profile.hometown}
                                         age={user_profile.profile__age}
                                         gender={user_profile.profile.gender}
@@ -116,9 +113,8 @@ const Search = () => {
                                                       .relationship_status
                                         }
                                         key={`${user_profile.profile.name}-extras-${user_profile.profile__age}`}
-                                    /> */
-                                    }
-                                })}
+                                    />
+                                ))}
                         </div>
                     </Col>
                 </Row>
