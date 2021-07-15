@@ -8,7 +8,7 @@ import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
 import UpdateUserInfoAccordian from '../UpdateUserInfoAccordian/UpdateUserInfoAccordian';
 const Settings = () => {
     const [user, setUser] = useState(null);
-    const [userUpdated, setUserUpdated] = useState(null);
+    const [userUpdated, setUserUpdated] = useState(false);
     const [cover_picture, setCoverPicture] = useState('');
     const [profile_picture, setProfilePicture] = useState('');
 
@@ -23,7 +23,6 @@ const Settings = () => {
         axios
             .get('http://localhost:8000/api/user/', requestData)
             .then((response) => {
-                console.log(response.data);
                 setUser(response.data);
                 setCoverPicture(response.data.profile.cover_picture);
                 setProfilePicture(response.data.profile.profile_picture);

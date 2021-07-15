@@ -3,7 +3,7 @@ import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const CreatePostPrompt = ({ setNewPost }) => {
-    const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
+    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
 

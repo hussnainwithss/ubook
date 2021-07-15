@@ -27,7 +27,7 @@ const Search = () => {
     };
 
     const getSearchResults = () => {
-        const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
+        const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
         const requestData = {
             headers: {
                 Authorization: `Token ${TOKEN}`,

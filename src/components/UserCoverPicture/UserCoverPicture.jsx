@@ -11,7 +11,7 @@ const CoverPicture = ({ picture }) => {
     );
 };
 const UserCoverPicture = ({ allowEdit, picture, updateCoverPictureHook }) => {
-    const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
+    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
     const [cover_picture, setCoverPicture] = useState({});
     const [showCoverPictureModal, setShowCoverPictureModal] = useState(false);
 
@@ -19,9 +19,6 @@ const UserCoverPicture = ({ allowEdit, picture, updateCoverPictureHook }) => {
         setShowCoverPictureModal(true);
     const handleCoverPictureUploadModalClose = () =>
         setShowCoverPictureModal(false);
-    console.log('Allow edit cover:', allowEdit);
-    console.log('Allow edit cover:', allowEdit);
-    console.log('Allow edit cover:', allowEdit);
     const coverPictureUploadHandler = (e) => {
         e.preventDefault();
         const PictureData = new FormData();

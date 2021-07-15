@@ -19,11 +19,8 @@ import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
 import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
 
 const Dashboard = () => {
-    const TOKEN = '89e4473a23e46a19218891280e7e18651c351a5e';
+    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
     const { id } = useParams();
-    console.log('id', id);
-    console.log('id', id);
-    console.log('id', id);
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState(null);
     const [newPost, setNewPost] = useState({});
@@ -57,7 +54,6 @@ const Dashboard = () => {
         axios
             .get('http://localhost:8000/api/user/', requestData)
             .then((response) => {
-                console.log(response.data);
                 setUser(response.data);
                 setCoverPicture(response.data.profile.cover_picture);
                 setProfilePicture(response.data.profile.profile_picture);

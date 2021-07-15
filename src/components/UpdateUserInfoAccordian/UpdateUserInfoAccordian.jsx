@@ -35,9 +35,22 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
 
     const updateProfileInfoHandler = (e) => {
         e.preventDefault();
-        console.log(updatedUserInfoData);
-        console.log(updatedUserInfoData);
-        console.log(updatedUserInfoData);
+        if (Object.keys(updatedUserInfoData).length === 0) {
+            return;
+        }
+        axios
+            .patch(
+                'http://localhost:8000/api/update-profile/',
+                updatedUserInfoData,
+                {
+                    headers: {
+                        Authorization: `Token ${TOKEN}`,
+                    },
+                }
+            )
+            .then((response) => {
+                userProfileUpdatedHook(true);
+            });
     };
     const updatePasswordHandler = (e) => {
         e.preventDefault();
@@ -61,7 +74,6 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
             )
             .then((response) => {
                 TOKEN.replace(TOKEN, response.data.token);
-                console.log(TOKEN, response.data.token);
             });
     };
     return (
@@ -136,6 +148,7 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
                                             profile: {
+                                                ...updatedUserInfoData.profile,
                                                 hometown: e.target.value,
                                             },
                                         });
@@ -153,6 +166,7 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
                                             profile: {
+                                                ...updatedUserInfoData.profile,
                                                 education: e.target.value,
                                             },
                                         });
@@ -169,7 +183,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setWork(e.target.value);
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
-                                            work: e.target.value,
+                                            profile: {
+                                                ...updatedUserInfoData.profile,
+                                                work: e.target.value,
+                                            },
                                         });
                                     }}
                                 />
@@ -185,7 +202,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setBio(e.target.value);
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
-                                            bio: e.target.value,
+                                            profile: {
+                                                ...updatedUserInfoData.profile,
+                                                bio: e.target.value,
+                                            },
                                         });
                                     }}
                                 />
@@ -207,13 +227,15 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                                 setGender(e.target.value);
                                                 setUpdatedUserInfoData({
                                                     ...updatedUserInfoData,
-                                                    gender: e.target.value,
+                                                    profile: {
+                                                        ...updatedUserInfoData.profile,
+                                                        gender: e.target.value,
+                                                    },
                                                 });
                                             }}
                                         />
                                     </Col>
                                     <Col className="col-auto">
-                                        {console.log(gender)}
                                         <Form.Check
                                             inline
                                             label="Female"
@@ -224,7 +246,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                                 setGender(e.target.value);
                                                 setUpdatedUserInfoData({
                                                     ...updatedUserInfoData,
-                                                    gender: e.target.value,
+                                                    profile: {
+                                                        ...updatedUserInfoData.profile,
+                                                        gender: e.target.value,
+                                                    },
                                                 });
                                             }}
                                         />
@@ -240,7 +265,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                                 setGender(e.target.value);
                                                 setUpdatedUserInfoData({
                                                     ...updatedUserInfoData,
-                                                    gender: e.target.value,
+                                                    profile: {
+                                                        ...updatedUserInfoData.profile,
+                                                        gender: e.target.value,
+                                                    },
                                                 });
                                             }}
                                         />
@@ -260,7 +288,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setBirthday(e.target.value);
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
-                                            birthday: e.target.value,
+                                            profile: {
+                                                ...updatedUserInfoData.profile,
+                                                birthday: e.target.value,
+                                            },
                                         });
                                     }}
                                 />
@@ -279,7 +310,11 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                                         setRelationshipStatus(e.target.value);
                                         setUpdatedUserInfoData({
                                             ...updatedUserInfoData,
-                                            relationship_status: e.target.value,
+                                            profile: {
+                                                ...updatedUserInfoData.profile,
+                                                relationship_status:
+                                                    e.target.value,
+                                            },
                                         });
                                     }}
                                 >
