@@ -4,16 +4,23 @@ import Dashboard from './components/Dashboard/Dashboard';
 
 import HomeScreen from './components/HomeScreen/HomeScreen';
 import Search from './components/Search/Search';
+import Settings from './components/Settings/Settings';
 function App() {
     return (
         <div className="wrapper">
             <BrowserRouter>
                 <Switch>
-                    <Route path="/dashboard">
+                    <Route path="/dashboard/:id">
+                        <Dashboard />
+                    </Route>
+                    <Route path="/dashboard/" exact>
+                        <Dashboard />
+                    </Route>
+                    <Route path="/dashboard/:id" exact>
                         <Dashboard />
                     </Route>
                     <Route path="/settings">
-                        <h1>settings</h1>
+                        <Settings />
                     </Route>
                     <Route path="/search">
                         <Search />

@@ -7,7 +7,7 @@ const ProfileCard = ({ id, picture, name, hometown, age, gender, extras }) => {
         <Card className="mb-2">
             <Card.Body>
                 <Link
-                    to={`/profile/${id}`}
+                    to={`/dashboard/${id}`}
                     className="no-text-decoration black-text"
                 >
                     <Row>

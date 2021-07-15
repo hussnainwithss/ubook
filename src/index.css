@@ -39,6 +39,7 @@ code {
   width: 40px;
 	height: 40px;
   margin-right:5px;
+  object-fit: cover;
 }
 
 .profile-card-image{
@@ -97,6 +98,7 @@ code {
 .profile-image{
   width:152px;
   height:152px;
+  object-fit: cover;
 }
 .parent{
   position: relative;
@@ -119,10 +121,56 @@ code {
 .profile-name{
   font-size:30px;
   color:white;
+  padding-left:10px;
 }
 
 
 .picture-upload-button, .picture-upload-button:hover,.picture-upload-button:hover, .picture-upload-button:focus {
  box-shadow: none;
  outline:none;
+ 
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 0;
+	width: 152px;
+	height: 152px;
+	transition: opacity .5s ease;
+	background:rgba(0,0,0,0.6);
+  }
+
+.overlay-cover{
+  height: 100%;
+  width: 100%;
+}
+
+.text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.overlay-button:hover .overlay{
+      opacity: 1;
+      cursor:pointer;
+  
+}
+
+.time-stamp{
+    color:gray;
+    font-size: small;
+}
+
+.user-info-post{
+  margin-left: 5px;
 }

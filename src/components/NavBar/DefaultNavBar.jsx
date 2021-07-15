@@ -3,7 +3,7 @@ import { Navbar, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import ProfileBadge from '../ProfileBadge/ProfileBadge';
-let DefaultSearchBar = () => {
+let DefaultNavBar = ({ userName, userPicture }) => {
     return (
         <Navbar className="navbar-color d-flex white-text justify-content-between">
             <Row>
@@ -21,7 +21,7 @@ let DefaultSearchBar = () => {
 
             <Row>
                 <Col>
-                    <ProfileBadge picture="" name="Hussnain Ahmad" />
+                    <ProfileBadge picture={userPicture} name={userName} />
                 </Col>
                 <Col md="4">
                     <Button type="submit" variant="danger">
@@ -33,4 +33,4 @@ let DefaultSearchBar = () => {
     );
 };
 
-export default DefaultSearchBar;
+export default DefaultNavBar;
