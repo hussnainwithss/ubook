@@ -1,9 +1,27 @@
 import React from 'react';
-import { Navbar, Row, Col, Button } from 'react-bootstrap';
+import { Navbar, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import ProfileBadge from '../ProfileBadge/ProfileBadge';
+import {
+    logoutPending,
+    logoutSuccessful,
+    logoutFail,
+} from '../../redux/authSlice';
+
 let DefaultNavBar = ({ userName, userPicture }) => {
+    const dispatch = useDispatch();
+    const { isLoading, error, isAuthenticated } = useSelector(
+        (state) => state.auth
+    );
+    const logoutHander = (e) => {
+        e.preventDefault();
+        dispatch(logoutPending());
+        sessionStorage.clear();
+        localStorage.clear();
+        dispatch(logoutSuccessful());
+    };
     return (
         <Navbar className="navbar-color d-flex white-text justify-content-between">
             <Row>
@@ -24,9 +42,27 @@ let DefaultNavBar = ({ userName, userPicture }) => {
                     <ProfileBadge picture={userPicture} name={userName} />
                 </Col>
                 <Col md="4">
-                    <Button type="submit" variant="danger">
-                        Logout
-                    </Button>
+                    <Form onSubmit={logoutHander}>
+                        <Button
+                            type="submit"
+                            variant="danger"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <span>
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                </span>
+                            ) : (
+                                'Logout'
+                            )}
+                        </Button>
+                    </Form>
                 </Col>
             </Row>
         </Navbar>

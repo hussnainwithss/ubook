@@ -33,7 +33,6 @@ const Settings = () => {
         user && (
             <>
                 <NavBar
-                    isLoggedIn={true}
                     userName={`${user.first_name} ${user.last_name}`}
                     userPicture={profile_picture}
                 />

@@ -57,7 +57,7 @@ const Search = () => {
 
     return (
         <div>
-            <NavBar isLoggedIn={true} />
+            <NavBar />
             <Container className="register-main">
                 <Row>
                     <Col md="4">

@@ -4,10 +4,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import NavBar from '../NavBar/NavBar';
 import Welcome from '../Welcome/Welcome';
 import RegistrationForm from '../RegistrationForm/RegistrationForm';
-let HomeScreen = ({ isLoggedIn }) => {
+let HomeScreen = () => {
     return (
         <div>
-            <NavBar isLoggedIn={isLoggedIn} />
+            <NavBar />
             <Container>
                 <Row>
                     <Col md="8">

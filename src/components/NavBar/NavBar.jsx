@@ -1,9 +1,10 @@
 import React from 'react';
 import LoginNavBar from './LoginNavBar';
 import DefaultNavBar from './DefaultNavBar';
-
-let NavBar = ({ isLoggedIn, userPicture, userName }) => {
-    return isLoggedIn ? (
+import { useSelector } from 'react-redux';
+let NavBar = ({ userPicture, userName }) => {
+    const { isAuthenticated } = useSelector((state) => state.auth);
+    return isAuthenticated ? (
         <DefaultNavBar userPicture={userPicture} userName={userName} />
     ) : (
         <LoginNavBar />

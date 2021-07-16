@@ -103,9 +103,7 @@ const Dashboard = () => {
                                         post={post}
                                         key={`${post.content}-${post.created_at}`}
                                         userName={`${user.first_name} ${user.last_name}`}
-                                        profilePicture={
-                                            user.profile.profile_picture
-                                        }
+                                        profilePicture={profile_picture}
                                     />
                                 );
                             })}
