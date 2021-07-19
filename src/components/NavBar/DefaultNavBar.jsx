@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import SearchBar from '../SearchBar/SearchBar';
 import ProfileBadge from '../ProfileBadge/ProfileBadge';
 import {
@@ -12,12 +13,12 @@ import {
 
 let DefaultNavBar = ({ userName, userPicture }) => {
     const dispatch = useDispatch();
-    const { isLoading, error, isAuthenticated } = useSelector(
-        (state) => state.auth
-    );
+    const [_, $, removeCookie] = useCookies(['authToken']);
+    const { isLoading, error } = useSelector((state) => state.auth);
     const logoutHander = (e) => {
         e.preventDefault();
         dispatch(logoutPending());
+        removeCookie('authToken');
         sessionStorage.clear();
         localStorage.clear();
         dispatch(logoutSuccessful());

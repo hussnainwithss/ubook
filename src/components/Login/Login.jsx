@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Button, Form, Spinner } from 'react-bootstrap';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 import {
@@ -15,10 +16,10 @@ let Login = () => {
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [_, setCookie] = useCookies(['authToken']);
+    const [networkError, setNetworkError] = useState(false);
     const history = useHistory();
-    const { isLoading, isAuthenticated, error } = useSelector(
-        (state) => state.auth
-    );
+    const { isLoading, error } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     function loginUser(e) {
         e.preventDefault();
@@ -30,12 +31,17 @@ let Login = () => {
         axios
             .post('http://localhost:8000/api/login/', userLoginCreds)
             .then((response) => {
-                sessionStorage.setItem('token', response.data.token);
-                if (rememberMe)
-                    localStorage.setItem(
-                        'ubook',
-                        JSON.stringify(response.data)
-                    );
+                let date = new Date();
+                const cookies_params = {
+                    path: '/',
+                    sameSite: 'strict',
+                };
+                cookies_params['expires'] = rememberMe
+                    ? new Date(date.setFullYear(date.getFullYear() + 1))
+                    : 0;
+                console.log(cookies_params);
+                setCookie('authToken', response.data.token, cookies_params);
+
                 dispatch(loginSuccessful());
                 dispatch(
                     setMessage({
@@ -46,8 +52,17 @@ let Login = () => {
                 history.push('/dashboard/');
             })
             .catch((errorMsg) => {
-                if (errorMsg.response) {
-                    dispatch(loginFail());
+                dispatch(loginFail());
+
+                if (!errorMsg.response) {
+                    setNetworkError(true);
+                    dispatch(
+                        setMessage({
+                            message: errorMsg.message,
+                            type: 'danger',
+                        })
+                    );
+                } else if (errorMsg.response) {
                     dispatch(
                         setMessage({
                             message: errorMsg.response.data.non_field_errors[0],
@@ -66,7 +81,7 @@ let Login = () => {
                     name="email"
                     required
                     onChange={(e) => setUserName(e.target.value)}
-                    isInvalid={error}
+                    isInvalid={error && !networkError}
                 />
                 <Form.Check
                     type="checkbox"
@@ -83,7 +98,7 @@ let Login = () => {
                     name="password"
                     required
                     onChange={(e) => setUserPassword(e.target.value)}
-                    isInvalid={error}
+                    isInvalid={error && !networkError}
                 />
                 <Form.Text className="mt-0">
                     <a className="login-bottom-text  white-text " href="/#">

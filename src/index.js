@@ -6,11 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import { Provider } from 'react-redux';
 import { store } from '../src/redux/store';
+import { CookiesProvider } from 'react-cookie';
+
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <App />
-        </Provider>
+        <CookiesProvider>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </CookiesProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
