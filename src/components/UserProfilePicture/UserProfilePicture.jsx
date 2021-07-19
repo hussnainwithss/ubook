@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserInfo } from '../../redux/userSlice';
 
 const ProfilePicture = ({ picture }) => {
     return (
@@ -27,6 +29,8 @@ const UserProfilePicture = ({
         setShowProfilePictureModal(true);
     const handlePorfilePictureUploadModalClose = () =>
         setShowProfilePictureModal(false);
+    const { user } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     const profilePictureUploadHandler = (e) => {
         e.preventDefault();
@@ -49,27 +53,43 @@ const UserProfilePicture = ({
             )
             .then((response) => {
                 handlePorfilePictureUploadModalClose();
-                updateProfilePictureHook(response.data.profile_picture);
+                dispatch(
+                    updateUserInfo({
+                        ...user,
+                        profile: {
+                            ...user.profile,
+                            profile_picture: response.data.profile_picture,
+                        },
+                    })
+                );
             });
     };
     return (
         <>
             <div className="image2">
                 {!allowEdit ? (
-                    <ProfilePicture picture={picture} />
-                ) : (
-                    <a
-                        onClick={handlePorfilePictureUploadModalShow}
-                        className="overlay-button"
-                    >
+                    <>
                         <ProfilePicture picture={picture} />
-                        <div className="overlay rounded-circle">
-                            <div className="text">Update Profile Picture</div>
-                        </div>
-                    </a>
+                        <span className="profile-name">{`${userName}, ${userAge}`}</span>
+                    </>
+                ) : (
+                    <>
+                        <a
+                            onClick={handlePorfilePictureUploadModalShow}
+                            className="overlay-button"
+                        >
+                            <ProfilePicture
+                                picture={user.profile.profile_picture}
+                            />
+                            <div className="overlay rounded-circle">
+                                <div className="text">
+                                    Update Profile Picture
+                                </div>
+                            </div>
+                        </a>
+                        <span className="profile-name">{`${user.first_name} ${user.last_name}, ${user.profile__age}`}</span>
+                    </>
                 )}
-
-                <span className="profile-name">{`${userName}, ${userAge}`}</span>
             </div>
             <Modal
                 show={showProfilePictureModal}

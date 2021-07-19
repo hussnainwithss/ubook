@@ -1,46 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Card,
-    Row,
-    Col,
-    Container,
-    Image,
-    Modal,
-    Button,
-    Form,
-} from 'react-bootstrap';
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
-import NavBar from '../NavBar/NavBar';
-import CreatePostPrompt from '../CreatePostPrompt/CreatePostPrompt';
-import Post from '../Post/Post';
-import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
-import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
-
+import UserProfile from './UserProfile';
+import {
+    loadUserPending,
+    loadUserSuccess,
+    loadUserFailed,
+} from '../../redux/userSlice';
 const Dashboard = () => {
     const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
     const { id } = useParams();
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState(null);
+    const { user: LoggedInUser } = useSelector((state) => state.user);
     const [newPost, setNewPost] = useState({});
-    const [cover_picture, setCoverPicture] = useState('');
-    const [profile_picture, setProfilePicture] = useState('');
+    const dispatch = useDispatch();
 
     const getPostsData = () => {
+        const requestData = {
+            headers: {
+                Authorization: `Token ${TOKEN}`,
+            },
+        };
+        if (id) {
+            requestData.params = {
+                id,
+            };
+        }
         axios
-            .get('http://localhost:8000/api/post/', {
-                headers: {
-                    Authorization: `Token ${TOKEN}`,
-                },
-            })
+            .get('http://localhost:8000/api/post/', requestData)
             .then((response) => {
                 setPosts(response.data);
             });
     };
-    useEffect(getPostsData, [newPost]);
+    useEffect(getPostsData, [newPost, id]);
 
     const getUserData = () => {
+        if (!id) dispatch(loadUserPending());
         const requestData = {
             headers: {
                 Authorization: `Token ${TOKEN}`,
@@ -54,64 +51,30 @@ const Dashboard = () => {
         axios
             .get('http://localhost:8000/api/user/', requestData)
             .then((response) => {
+                if (!id) dispatch(loadUserSuccess(response.data));
                 setUser(response.data);
-                setCoverPicture(response.data.profile.cover_picture);
-                setProfilePicture(response.data.profile.profile_picture);
             });
     };
     useEffect(getUserData, [id]);
 
     return (
-        user && (
-            <div>
-                <NavBar
-                    isLoggedIn={true}
-                    userName={`${user.first_name} ${user.last_name}`}
-                    userPicture={profile_picture}
-                />
-                <section className="parent">
-                    <UserCoverPicture
-                        allowEdit={id === undefined ? true : false}
-                        picture={cover_picture}
-                        updateCoverPictureHook={setCoverPicture}
-                    />
-                    <UserProfilePicture
-                        allowEdit={id === undefined ? true : false}
-                        picture={profile_picture}
-                        updateProfilePictureHook={setProfilePicture}
-                        userName={`${user.first_name} ${user.last_name}`}
-                        userAge={user.profile__age}
-                    />
-                </section>
-                <Container className="profile-body">
-                    <Row>
-                        <Col md="4">
-                            <UserInfoAccordian userInfo={user.profile} />
-                        </Col>
-                        <Col md="8">
-                            {id ? (
-                                ''
-                            ) : (
-                                <CreatePostPrompt
-                                    className="mb-5"
-                                    setNewPost={setNewPost}
-                                />
-                            )}
-                            {posts.map((post, _) => {
-                                return (
-                                    <Post
-                                        post={post}
-                                        key={`${post.content}-${post.created_at}`}
-                                        userName={`${user.first_name} ${user.last_name}`}
-                                        profilePicture={profile_picture}
-                                    />
-                                );
-                            })}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        )
+        <>
+            {id !== undefined
+                ? user && (
+                      <UserProfile
+                          user={user}
+                          posts={posts}
+                          allowEdit={false}
+                      />
+                  )
+                : LoggedInUser && (
+                      <UserProfile
+                          user={LoggedInUser}
+                          posts={posts}
+                          allowEdit={true}
+                      />
+                  )}
+        </>
     );
 };
 

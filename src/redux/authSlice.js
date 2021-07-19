@@ -34,6 +34,7 @@ export const authSlice = createSlice({
         logoutFail: (state) => ({
             ...state,
             error: true,
+            isLoading: false,
         }),
     },
 });

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Alert, Fade } from 'react-bootstrap';
-import { BrowserRouter, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -13,7 +13,6 @@ import { loginSuccessful } from '../src/redux/authSlice';
 function App() {
     const { message, type } = useSelector((state) => state.messageAlert);
     const { isAuthenticated } = useSelector((state) => state.auth);
-    const history = useHistory();
     const dispatch = useDispatch();
     const [cookies] = useCookies(['authToken']);
     const handleCookiesOnStartUp = () => {
