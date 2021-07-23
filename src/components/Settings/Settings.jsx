@@ -6,13 +6,14 @@ import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
 import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
 import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
 import UpdateUserInfoAccordian from '../UpdateUserInfoAccordian/UpdateUserInfoAccordian';
+import { useCookies } from 'react-cookie';
 const Settings = () => {
     const [user, setUser] = useState(null);
     const [userUpdated, setUserUpdated] = useState(false);
     const [cover_picture, setCoverPicture] = useState('');
     const [profile_picture, setProfilePicture] = useState('');
-
-    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
+    const [cookies] = useCookies(['authToken']);
+    const TOKEN = cookies.authToken;
 
     const getUserData = () => {
         const requestData = {

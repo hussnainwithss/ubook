@@ -4,6 +4,7 @@ const initialState = {
     isLoading: false,
     user: null,
     error: null,
+    posts: [],
 };
 
 export const userSlice = createSlice({
@@ -27,6 +28,9 @@ export const userSlice = createSlice({
             ...state,
             user: action.payload,
         }),
+        updateUserPosts: (state, action) => {
+            return { ...state, posts: [...state.posts, action.payload] };
+        },
     },
 });
 
@@ -35,6 +39,7 @@ export const {
     loadUserSuccess,
     loadUserFailed,
     updateUserInfo,
+    updateUserPosts,
 } = userSlice.actions;
 
 export default userSlice.reducer;

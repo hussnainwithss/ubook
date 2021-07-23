@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Accordion, Card, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import ContextAwareToggle from '../ContextAwareToggle/ContextAwareToggle';
-
+import { useCookies } from 'react-cookie';
 const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
     const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
-    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
-
     const [first_name, setFirstName] = useState(userInfo.first_name);
     const [last_name, setLastName] = useState(userInfo.last_name);
     const [email, setEmail] = useState(userInfo.email);
@@ -23,6 +21,9 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
     const [new_password, setNewPassword] = useState('');
     const [confirm_new_password, setConfirmPassword] = useState('');
     const [updatedUserInfoData, setUpdatedUserInfoData] = useState({});
+    const [cookies, setCookie] = useCookies(['authToken']);
+    const TOKEN = cookies.authToken;
+
     const verifyNewPassword = () => {
         if (current_password === new_password) {
             return false;
@@ -74,6 +75,10 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
             )
             .then((response) => {
                 TOKEN.replace(TOKEN, response.data.token);
+                setCookie('authToken', TOKEN, {
+                    path: '/',
+                    sameSite: 'strict',
+                });
             });
     };
     return (

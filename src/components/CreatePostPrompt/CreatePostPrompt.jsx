@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-
+import { useCookies } from 'react-cookie';
+import { updateUserPosts } from '../../redux/userSlice';
 const CreatePostPrompt = ({ setNewPost }) => {
-    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
+    const [cookies] = useCookies(['authToken']);
+    const TOKEN = cookies.authToken;
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
-
+    const dispatch = useDispatch();
     function createPostHandler(e) {
         e.preventDefault();
         const postData = new FormData();
@@ -26,6 +29,7 @@ const CreatePostPrompt = ({ setNewPost }) => {
             .post('http://localhost:8000/api/post/', postData, headers)
             .then((response) => {
                 setNewPost(response.data);
+                dispatch(updateUserPosts(response.data));
             })
             .catch((error) => {
                 if (error.response) console.log(error.response.data);

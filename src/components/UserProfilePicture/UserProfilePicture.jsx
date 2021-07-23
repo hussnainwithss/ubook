@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserInfo } from '../../redux/userSlice';
-
+import { useCookies } from 'react-cookie';
 const ProfilePicture = ({ picture }) => {
     return (
         <Image
@@ -20,7 +20,8 @@ const UserProfilePicture = ({
     userName,
     userAge,
 }) => {
-    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
+    const [cookies] = useCookies(['authToken']);
+    const TOKEN = cookies.authToken;
     const [profile_picture, setProfilePicture] = useState({});
     const [showProfilePictureModal, setShowProfilePictureModal] =
         useState(false);

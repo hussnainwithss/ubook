@@ -7,13 +7,19 @@ import {
     loadUserPending,
     loadUserSuccess,
     loadUserFailed,
+    updateUserPosts,
 } from '../../redux/userSlice';
+import { useCookies } from 'react-cookie';
 const Dashboard = () => {
-    const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
+    const [cookies] = useCookies(['authToken']);
+    console.log(cookies);
+    const TOKEN = cookies.authToken;
     const { id } = useParams();
     const [posts, setPosts] = useState([]);
     const [user, setUser] = useState(null);
-    const { user: LoggedInUser } = useSelector((state) => state.user);
+    const { user: LoggedInUser, posts: LoggedInUserPosts } = useSelector(
+        (state) => state.user
+    );
     const [newPost, setNewPost] = useState({});
     const dispatch = useDispatch();
 
@@ -32,9 +38,10 @@ const Dashboard = () => {
             .get('http://localhost:8000/api/post/', requestData)
             .then((response) => {
                 setPosts(response.data);
+                if (!id) updateUserPosts(response.data);
             });
     };
-    useEffect(getPostsData, [newPost, id]);
+    useEffect(getPostsData, [LoggedInUserPosts, id]);
 
     const getUserData = () => {
         if (!id) dispatch(loadUserPending());

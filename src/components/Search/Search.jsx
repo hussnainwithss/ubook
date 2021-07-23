@@ -5,13 +5,14 @@ import NavBar from '../NavBar/NavBar';
 import ProfileCard from '../ProfileCard/ProfileCard';
 import SearchFilters from '../SearchFilters/SearchFilters';
 import useQuery from '../../utils/useQuery';
-
+import { useCookies } from 'react-cookie';
 const Search = () => {
     const [queryParams, setQueryParams] = useState(useQuery());
     const [searchResults, setSearchResults] = useState([]);
     const [hometownFilters, setHometownFilters] = useState([]);
     const [educationFilters, setEducationFilters] = useState([]);
     const [workFilters, setWorkFilters] = useState([]);
+    const [cookies] = useCookies(['authToken']);
     const search_param = queryParams.get('search');
 
     const getFiltersFromData = (filter_name, data) => {
@@ -27,7 +28,7 @@ const Search = () => {
     };
 
     const getSearchResults = () => {
-        const TOKEN = '849a631356ad9a6d1ad1cd7c28607eb764f83d3a';
+        const TOKEN = cookies.authToken;
         const requestData = {
             headers: {
                 Authorization: `Token ${TOKEN}`,
