@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Col, Form, Button } from 'react-bootstrap';
+import { Col, Form, Button, Spinner } from 'react-bootstrap';
+import { useHistory } from 'react-router';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginPending, loginSuccessful } from '../../redux/authSlice';
+import { setMessage } from '../../redux/messageAlertSlice';
 const RegistrationForm = () => {
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
@@ -9,6 +14,10 @@ const RegistrationForm = () => {
     const [confirm_password, setConfirmPassword] = useState('');
     const [birthday, setBirthday] = useState('');
     const [gender, setGender] = useState('');
+    const [_, setCookie] = useCookies(['authToken']);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const { isLoading, error } = useSelector((state) => state.auth);
 
     function userRegistrationHandler(e) {
         e.preventDefault();
@@ -21,10 +30,38 @@ const RegistrationForm = () => {
             birthday,
             gender,
         };
+
         axios
             .post('http://localhost:8000/api/register/', userRegistrationData)
             .then((response) => {
                 console.log(response);
+                dispatch(loginPending());
+                const userLoginCreds = {
+                    username: email,
+                    password: password,
+                };
+                const cookies_params = {
+                    path: '/',
+                    sameSite: 'strict',
+                };
+
+                axios
+                    .post('http://localhost:8000/api/login/', userLoginCreds)
+                    .then((respoinse) => {
+                        setCookie(
+                            'authToken',
+                            response.data.token,
+                            cookies_params
+                        );
+                        dispatch(loginSuccessful());
+                        dispatch(
+                            setMessage({
+                                message: 'Login Successful',
+                                type: 'success',
+                            })
+                        );
+                        history.push('/dashboard/');
+                    });
             })
             .catch((error) => {
                 if (error.response) console.log(error.response.data);
@@ -141,7 +178,19 @@ const RegistrationForm = () => {
                 </Form.Text>
                 <Form.Group>
                     <Button variant="primary" type="submit">
-                        Sign Up
+                        {isLoading ? (
+                            <span>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                            </span>
+                        ) : (
+                            'Sign Up'
+                        )}
                     </Button>
                 </Form.Group>
             </Form>

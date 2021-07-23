@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import { Accordion, Card, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import ContextAwareToggle from '../ContextAwareToggle/ContextAwareToggle';
 import { useCookies } from 'react-cookie';
-const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
+import { updateUserInfo } from '../../redux/userSlice';
+const UpdateUserInfoAccordian = () => {
+    const { user } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
     const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
-    const [first_name, setFirstName] = useState(userInfo.first_name);
-    const [last_name, setLastName] = useState(userInfo.last_name);
-    const [email, setEmail] = useState(userInfo.email);
-    const [bio, setBio] = useState(userInfo.profile.bio);
-    const [education, setEducation] = useState(userInfo.profile.education);
-    const [work, setWork] = useState(userInfo.profile.work);
-    const [hometown, setHometown] = useState(userInfo.profile.hometown);
-    const [gender, setGender] = useState(userInfo.profile.gender);
-    const [birthday, setBirthday] = useState(userInfo.profile.birthday);
+    const [first_name, setFirstName] = useState(user.first_name);
+    const [last_name, setLastName] = useState(user.last_name);
+    const [email, setEmail] = useState(user.email);
+    const [bio, setBio] = useState(user.profile.bio);
+    const [education, setEducation] = useState(user.profile.education);
+    const [work, setWork] = useState(user.profile.work);
+    const [hometown, setHometown] = useState(user.profile.hometown);
+    const [gender, setGender] = useState(user.profile.gender);
+    const [birthday, setBirthday] = useState(user.profile.birthday);
     const [relationship_status, setRelationshipStatus] = useState(
-        userInfo.profile.relationship_status
+        user.profile.relationship_status
     );
     const [current_password, setCurrentPassword] = useState('');
     const [new_password, setNewPassword] = useState('');
@@ -50,7 +54,7 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                 }
             )
             .then((response) => {
-                userProfileUpdatedHook(true);
+                dispatch(updateUserInfo(response.data));
             });
     };
     const updatePasswordHandler = (e) => {
@@ -74,8 +78,7 @@ const UpdateUserInfoAccordian = ({ userInfo, userProfileUpdatedHook }) => {
                 }
             )
             .then((response) => {
-                TOKEN.replace(TOKEN, response.data.token);
-                setCookie('authToken', TOKEN, {
+                setCookie('authToken', response.data.token, {
                     path: '/',
                     sameSite: 'strict',
                 });

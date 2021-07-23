@@ -13,13 +13,7 @@ const ProfilePicture = ({ picture }) => {
     );
 };
 
-const UserProfilePicture = ({
-    allowEdit,
-    picture,
-    updateProfilePictureHook,
-    userName,
-    userAge,
-}) => {
+const UserProfilePicture = ({ allowEdit, picture, userName, userAge }) => {
     const [cookies] = useCookies(['authToken']);
     const TOKEN = cookies.authToken;
     const [profile_picture, setProfilePicture] = useState({});

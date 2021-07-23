@@ -1,52 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+
 import NavBar from '../NavBar/NavBar';
 import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
 import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
 import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
 import UpdateUserInfoAccordian from '../UpdateUserInfoAccordian/UpdateUserInfoAccordian';
-import { useCookies } from 'react-cookie';
-const Settings = () => {
-    const [user, setUser] = useState(null);
-    const [userUpdated, setUserUpdated] = useState(false);
-    const [cover_picture, setCoverPicture] = useState('');
-    const [profile_picture, setProfilePicture] = useState('');
-    const [cookies] = useCookies(['authToken']);
-    const TOKEN = cookies.authToken;
 
-    const getUserData = () => {
-        const requestData = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        axios
-            .get('http://localhost:8000/api/user/', requestData)
-            .then((response) => {
-                setUser(response.data);
-                setCoverPicture(response.data.profile.cover_picture);
-                setProfilePicture(response.data.profile.profile_picture);
-            });
-    };
-    useEffect(getUserData, [userUpdated]);
+const Settings = () => {
+    const { user } = useSelector((state) => state.user);
+
     return (
         user && (
             <>
-                <NavBar
-                    userName={`${user.first_name} ${user.last_name}`}
-                    userPicture={profile_picture}
-                />
+                <NavBar />
                 <section className="parent">
                     <UserCoverPicture
                         allowEdit={true}
-                        picture={cover_picture}
-                        updateCoverPictureHook={setCoverPicture}
+                        picture={user.profile.cover_picture}
                     />
                     <UserProfilePicture
                         allowEdit={true}
-                        picture={profile_picture}
-                        updateProfilePictureHook={setProfilePicture}
+                        picture={user.profile.profile_picture}
                         userName={`${user.first_name} ${user.last_name}`}
                         userAge={user.profile__age}
                     />
@@ -57,10 +33,7 @@ const Settings = () => {
                             <UserInfoAccordian userInfo={user.profile} />
                         </Col>
                         <Col md="8">
-                            <UpdateUserInfoAccordian
-                                userProfileUpdatedHook={setUserUpdated}
-                                userInfo={user}
-                            />
+                            <UpdateUserInfoAccordian />
                         </Col>
                     </Row>
                 </Container>

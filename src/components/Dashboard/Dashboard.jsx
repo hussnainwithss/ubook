@@ -12,7 +12,6 @@ import {
 import { useCookies } from 'react-cookie';
 const Dashboard = () => {
     const [cookies] = useCookies(['authToken']);
-    console.log(cookies);
     const TOKEN = cookies.authToken;
     const { id } = useParams();
     const [posts, setPosts] = useState([]);
@@ -20,7 +19,6 @@ const Dashboard = () => {
     const { user: LoggedInUser, posts: LoggedInUserPosts } = useSelector(
         (state) => state.user
     );
-    const [newPost, setNewPost] = useState({});
     const dispatch = useDispatch();
 
     const getPostsData = () => {
