@@ -47,7 +47,7 @@ const RegistrationForm = () => {
 
                 axios
                     .post('http://localhost:8000/api/login/', userLoginCreds)
-                    .then((respoinse) => {
+                    .then((response) => {
                         setCookie(
                             'authToken',
                             response.data.token,

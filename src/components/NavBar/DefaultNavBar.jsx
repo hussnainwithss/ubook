@@ -11,14 +11,14 @@ import {
     logoutFail,
 } from '../../redux/authSlice';
 
-let DefaultNavBar = ({ userName, userPicture }) => {
+let DefaultNavBar = ({ userName, userPicture, searchParams }) => {
     const dispatch = useDispatch();
     const [_, $, removeCookie] = useCookies(['authToken']);
     const { isLoading, error } = useSelector((state) => state.auth);
     const logoutHander = (e) => {
         e.preventDefault();
         dispatch(logoutPending());
-        removeCookie('authToken');
+        removeCookie('authToken', { path: '/' });
         sessionStorage.clear();
         localStorage.clear();
         dispatch(logoutSuccessful());
@@ -34,7 +34,7 @@ let DefaultNavBar = ({ userName, userPicture }) => {
                     </Link>
                 </Col>
                 <Col md="9">
-                    <SearchBar />
+                    <SearchBar searchParams={searchParams} />
                 </Col>
             </Row>
 
