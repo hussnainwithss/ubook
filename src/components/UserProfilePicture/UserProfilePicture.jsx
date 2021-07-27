@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserInfo } from 'redux/userSlice';
-import { API_BASE_PATH } from 'config';
+import { updateUserProfilePicture } from 'api';
 
 const ProfilePicture = ({ picture }) => {
     return (
@@ -31,35 +30,18 @@ const UserProfilePicture = ({ allowEdit, picture, userName, userAge }) => {
 
     const profilePictureUploadHandler = (e) => {
         e.preventDefault();
-        const PictureData = new FormData();
-        PictureData.append(
-            'profile_picture',
-            profile_picture,
-            profile_picture.name
-        );
-        const headers = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        axios
-            .patch(
-                `${API_BASE_PATH}/update-profile-pictures/`,
-                PictureData,
-                headers
-            )
-            .then((response) => {
-                handlePorfilePictureUploadModalClose();
-                dispatch(
-                    updateUserInfo({
-                        ...user,
-                        profile: {
-                            ...user.profile,
-                            profile_picture: response.data.profile_picture,
-                        },
-                    })
-                );
-            });
+        updateUserProfilePicture(profile_picture).then((response) => {
+            handlePorfilePictureUploadModalClose();
+            dispatch(
+                updateUserInfo({
+                    ...user,
+                    profile: {
+                        ...user.profile,
+                        profile_picture: response.data.profile_picture,
+                    },
+                })
+            );
+        });
     };
     return (
         <>

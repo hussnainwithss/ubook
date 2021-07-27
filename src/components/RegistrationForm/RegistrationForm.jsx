@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Form, Button, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { loginPending, loginSuccessful } from 'redux/authSlice';
 import { setMessage } from 'redux/messageAlertSlice';
-import { API_BASE_PATH } from 'config';
+import { registerUser, authenticateUser, setAuthToken } from 'api';
+import { setUserToken } from 'utils/user';
 
 const RegistrationForm = () => {
     const [first_name, setFirstName] = useState('');
@@ -16,54 +15,35 @@ const RegistrationForm = () => {
     const [confirm_password, setConfirmPassword] = useState('');
     const [birthday, setBirthday] = useState('');
     const [gender, setGender] = useState('');
-    const [_, setCookie] = useCookies(['authToken']);
     const history = useHistory();
     const dispatch = useDispatch();
     const { isLoading, error } = useSelector((state) => state.auth);
 
     function userRegistrationHandler(e) {
         e.preventDefault();
-        const userRegistrationData = {
+        registerUser(
             first_name,
             last_name,
             email,
             password,
             confirm_password,
             birthday,
-            gender,
-        };
-
-        axios
-            .post(`${API_BASE_PATH}/register/`, userRegistrationData)
+            gender
+        )
             .then((response) => {
-                console.log(response);
                 dispatch(loginPending());
-                const userLoginCreds = {
-                    username: email,
-                    password: password,
-                };
-                const cookies_params = {
-                    path: '/',
-                    sameSite: 'strict',
-                };
-
-                axios
-                    .post(`${API_BASE_PATH}/login/`, userLoginCreds)
-                    .then((response) => {
-                        setCookie(
-                            'authToken',
-                            response.data.token,
-                            cookies_params
-                        );
-                        dispatch(loginSuccessful());
-                        dispatch(
-                            setMessage({
-                                message: 'Login Successful',
-                                type: 'success',
-                            })
-                        );
-                        history.push('/dashboard/');
-                    });
+                authenticateUser(email, password).then((response) => {
+                    setUserToken(response.data.token);
+                    setAuthToken(response.data.token);
+                    dispatch(loginSuccessful());
+                    dispatch(
+                        setMessage({
+                            message: `Registration Successful! Welcome! ${first_name} ${last_name} `,
+                            type: 'success',
+                        })
+                    );
+                    history.push('/dashboard/');
+                });
             })
             .catch((error) => {
                 if (error.response) console.log(error.response.data);

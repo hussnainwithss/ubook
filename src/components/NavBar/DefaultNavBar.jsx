@@ -2,20 +2,19 @@ import React from 'react';
 import { Navbar, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import SearchBar from 'components/SearchBar/SearchBar';
 import ProfileBadge from 'components/ProfileBadge/ProfileBadge';
 import { logoutPending, logoutSuccessful, logoutFail } from 'redux/authSlice';
+import { deleteUserToken } from 'utils/user';
 
 const DefaultNavBar = ({ userName, userPicture, searchParams }) => {
     const dispatch = useDispatch();
-    const [_, $, removeCookie] = useCookies(['authToken']);
     const { isLoading, error } = useSelector((state) => state.auth);
 
     const logoutHander = (e) => {
         e.preventDefault();
         dispatch(logoutPending());
-        removeCookie('authToken', { path: '/' });
+        deleteUserToken();
         sessionStorage.clear();
         localStorage.clear();
         dispatch(logoutSuccessful());

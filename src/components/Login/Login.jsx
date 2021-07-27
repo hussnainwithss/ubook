@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Button, Form, Spinner } from 'react-bootstrap';
-import { useCookies } from 'react-cookie';
-import axios from 'axios';
 import { loginPending, loginSuccessful, loginFail } from 'redux/authSlice';
 import { setMessage } from 'redux/messageAlertSlice';
-import { API_BASE_PATH } from 'config';
+import { authenticateUser, setAuthToken } from 'api';
+import { setUserToken } from 'utils/user';
 
 const Login = () => {
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
-    const [cookie, setCookie] = useCookies(['authToken']);
     const [networkError, setNetworkError] = useState(false);
     const history = useHistory();
     const { isLoading, error } = useSelector((state) => state.auth);
@@ -21,24 +19,10 @@ const Login = () => {
     function loginUser(e) {
         e.preventDefault();
         dispatch(loginPending());
-        const userLoginCreds = {
-            username: userName,
-            password: userPassword,
-        };
-        axios
-            .post(`${API_BASE_PATH}/login/`, userLoginCreds)
+        authenticateUser(userName, userPassword)
             .then((response) => {
-                let date = new Date();
-                const cookies_params = {
-                    path: '/',
-                    sameSite: 'strict',
-                };
-                cookies_params['expires'] = rememberMe
-                    ? new Date(date.setFullYear(date.getFullYear() + 1))
-                    : 0;
-                console.log(cookies_params);
-                setCookie('authToken', response.data.token, cookies_params);
-
+                setUserToken(response.data.token, rememberMe);
+                setAuthToken(response.data.token);
                 dispatch(loginSuccessful());
                 dispatch(
                     setMessage({
@@ -50,7 +34,6 @@ const Login = () => {
             })
             .catch((errorMsg) => {
                 dispatch(loginFail());
-
                 if (!errorMsg.response) {
                     setNetworkError(true);
                     dispatch(
@@ -59,7 +42,7 @@ const Login = () => {
                             type: 'danger',
                         })
                     );
-                } else if (errorMsg.response) {
+                } else if (errorMsg.response.data) {
                     dispatch(
                         setMessage({
                             message: errorMsg.response.data.non_field_errors[0],

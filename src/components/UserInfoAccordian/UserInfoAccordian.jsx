@@ -61,7 +61,7 @@ const UserInfoAccordian = ({ userInfo }) => {
                         <Row>
                             <Col md="5">Education:</Col>
                             <Col md="6">
-                                {userInfo.work
+                                {userInfo.education
                                     ? userInfo.education
                                     : 'No Education Info'}
                             </Col>

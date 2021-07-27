@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import NavBar from 'components/NavBar/NavBar';
 import ProfileCard from 'components/ProfileCard/ProfileCard';
 import SearchFilters from 'components/SearchFilters/SearchFilters';
 import useQuery from 'utils/useQuery';
-import { API_BASE_PATH } from 'config';
+import { userSearch } from 'api';
 
 const Search = () => {
     const [queryParams, setQueryParams] = useState(useQuery());
@@ -14,7 +12,6 @@ const Search = () => {
     const [hometownFilters, setHometownFilters] = useState([]);
     const [educationFilters, setEducationFilters] = useState([]);
     const [workFilters, setWorkFilters] = useState([]);
-    const [cookies] = useCookies(['authToken']);
     const search_param = queryParams.get('search');
 
     const getFiltersFromData = (filter_name, data) => {
@@ -30,23 +27,18 @@ const Search = () => {
     };
 
     const getSearchResults = () => {
-        const TOKEN = cookies.authToken;
         const requestData = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-            params: {
-                search: search_param,
-            },
+            search: search_param,
         };
+        console.log(queryParams.toString());
         queryParams.forEach((value, key) => {
-            requestData.params[key] = value;
+            requestData[key] = value;
         });
-        axios.get(`${API_BASE_PATH}/search/`, requestData).then((response) => {
-            setSearchResults(response.data);
-            setWorkFilters(getFiltersFromData('work', response.data));
-            setEducationFilters(getFiltersFromData('education', response.data));
-            setHometownFilters(getFiltersFromData('hometown', response.data));
+        userSearch(requestData).then((response) => {
+            setSearchResults(response);
+            setWorkFilters(getFiltersFromData('work', response));
+            setEducationFilters(getFiltersFromData('education', response));
+            setHometownFilters(getFiltersFromData('hometown', response));
         });
     };
     useEffect(getSearchResults, [queryParams]);

@@ -11,6 +11,7 @@ import {
     updateUserPosts,
 } from 'redux/userSlice';
 import { API_BASE_PATH } from 'config';
+import { getUserInfo, getUserPost } from 'api';
 
 const Dashboard = () => {
     const [cookies] = useCookies(['authToken']);
@@ -24,38 +25,18 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     const getPostsData = () => {
-        const requestData = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        if (id)
-            requestData.params = {
-                id,
-            };
-
-        axios.get(`${API_BASE_PATH}/post/`, requestData).then((response) => {
-            setPosts(response.data);
-            if (!id) updateUserPosts(response.data);
+        getUserPost(id).then((response) => {
+            setPosts(response);
+            if (!id) updateUserPosts(response);
         });
     };
     useEffect(getPostsData, [LoggedInUserPosts, id]);
 
     const getUserData = () => {
         if (!id) dispatch(loadUserPending());
-        const requestData = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        if (id)
-            requestData.params = {
-                id,
-            };
-
-        axios.get(`${API_BASE_PATH}/user/`, requestData).then((response) => {
-            if (!id) dispatch(loadUserSuccess(response.data));
-            setUser(response.data);
+        getUserInfo(id).then((response) => {
+            if (!id) dispatch(loadUserSuccess(response));
+            setUser(response);
         });
     };
     useEffect(getUserData, [id]);

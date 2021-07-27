@@ -1,32 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Form, Button } from 'react-bootstrap';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { updateUserPosts } from 'redux/userSlice';
-import { API_BASE_PATH } from 'config';
+import { createPost } from 'api';
 
 const CreatePostPrompt = ({ setNewPost }) => {
-    const [cookies] = useCookies(['authToken']);
-    const TOKEN = cookies.authToken;
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
     const dispatch = useDispatch();
 
     function createPostHandler(e) {
         e.preventDefault();
-        const postData = new FormData();
-        if (content) postData.append('content', content);
-        else return;
-
-        if (image) postData.append('image', image, image.name);
-        const headers = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        axios
-            .post(`${API_BASE_PATH}/post/`, postData, headers)
+        if (!content && !image) {
+            return;
+        }
+        createPost(content, image)
             .then((response) => {
                 setNewPost(response.data);
                 dispatch(updateUserPosts(response.data));
@@ -35,7 +23,7 @@ const CreatePostPrompt = ({ setNewPost }) => {
                 if (error.response) console.log(error.response.data);
             });
         setContent('');
-        setImage('');
+        e.target.image.value = null;
     }
 
     return (
@@ -57,6 +45,7 @@ const CreatePostPrompt = ({ setNewPost }) => {
                         <Form.File
                             accept="image/*"
                             onChange={(e) => setImage(e.target.files[0])}
+                            name="image"
                         />
                     </div>
                     <Button varriant="primary" type="submit">

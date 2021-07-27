@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Form, Button } from 'react-bootstrap';
-
+import { useHistory } from 'react-router';
 const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
 
 const SearchFilters = ({
@@ -18,6 +18,7 @@ const SearchFilters = ({
     const initialQueryParams = new URLSearchParams({
         search: searchParams,
     });
+    const history = useHistory();
 
     const searchFormSubmitHandler = (e) => {
         e.preventDefault();
@@ -32,6 +33,7 @@ const SearchFilters = ({
                 realtionshipStatus
             );
         setQueryParams(updatedQueryParams);
+        history.push(`/search/?${updatedQueryParams.toString()}`);
     };
 
     const searchFormResetHandler = (e) => {

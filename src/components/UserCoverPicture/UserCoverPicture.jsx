@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { updateUserInfo } from 'redux/userSlice';
-import { API_BASE_PATH } from 'config';
-
+import { updateUserCoverPicture } from 'api';
 const CoverPicture = ({ picture }) => {
     return (
         <Image
@@ -28,31 +26,18 @@ const UserCoverPicture = ({ allowEdit, picture }) => {
         setShowCoverPictureModal(false);
     const coverPictureUploadHandler = (e) => {
         e.preventDefault();
-        const PictureData = new FormData();
-        PictureData.append('cover_picture', cover_picture, cover_picture.name);
-        const headers = {
-            headers: {
-                Authorization: `Token ${TOKEN}`,
-            },
-        };
-        axios
-            .patch(
-                `${API_BASE_PATH}/update-profile-pictures/`,
-                PictureData,
-                headers
-            )
-            .then((response) => {
-                handleCoverPictureUploadModalClose();
-                dispatch(
-                    updateUserInfo({
-                        ...user,
-                        profile: {
-                            ...user.profile,
-                            cover_picture: response.data.cover_picture,
-                        },
-                    })
-                );
-            });
+        updateUserCoverPicture(cover_picture).then((response) => {
+            handleCoverPictureUploadModalClose();
+            dispatch(
+                updateUserInfo({
+                    ...user,
+                    profile: {
+                        ...user.profile,
+                        cover_picture: response.data.cover_picture,
+                    },
+                })
+            );
+        });
     };
 
     return (

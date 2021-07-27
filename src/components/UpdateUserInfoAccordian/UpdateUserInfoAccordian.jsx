@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import ContextAwareToggle from 'components/ContextAwareToggle/ContextAwareToggle';
 import { updateUserInfo } from 'redux/userSlice';
-import { API_BASE_PATH } from 'config';
+import { updateUserProfile, changeUserPassword, setAuthToken } from 'api';
+import { setUserToken } from 'utils/user';
 
 const UpdateUserInfoAccordian = () => {
     const { user } = useSelector((state) => state.user);
@@ -42,15 +43,9 @@ const UpdateUserInfoAccordian = () => {
         e.preventDefault();
         if (Object.keys(updatedUserInfoData).length === 0) return;
 
-        axios
-            .patch(`${API_BASE_PATH}/update-profile/`, updatedUserInfoData, {
-                headers: {
-                    Authorization: `Token ${TOKEN}`,
-                },
-            })
-            .then((response) => {
-                dispatch(updateUserInfo(response.data));
-            });
+        updateUserProfile(updatedUserInfoData).then((response) => {
+            dispatch(updateUserInfo(response.data));
+        });
     };
 
     const updatePasswordHandler = (e) => {
@@ -58,23 +53,14 @@ const UpdateUserInfoAccordian = () => {
         const ValidNewPassword = verifyNewPassword();
         if (!ValidNewPassword) return;
 
-        const newPasswordData = {
+        changeUserPassword(
             current_password,
             new_password,
-            confirm_new_password,
-        };
-        axios
-            .patch(`${API_BASE_PATH}/change-password/`, newPasswordData, {
-                headers: {
-                    Authorization: `Token ${TOKEN}`,
-                },
-            })
-            .then((response) => {
-                setCookie('authToken', response.data.token, {
-                    path: '/',
-                    sameSite: 'strict',
-                });
-            });
+            confirm_new_password
+        ).then((response) => {
+            setUserToken(response.data.token);
+            setAuthToken(response.data.token);
+        });
     };
 
     return (
