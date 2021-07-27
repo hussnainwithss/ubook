@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
-import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserInfo } from 'redux/userSlice';
 import { updateUserProfilePicture } from 'api';
@@ -15,8 +14,6 @@ const ProfilePicture = ({ picture }) => {
 };
 
 const UserProfilePicture = ({ allowEdit, picture, userName, userAge }) => {
-    const [cookies] = useCookies(['authToken']);
-    const TOKEN = cookies.authToken;
     const [profile_picture, setProfilePicture] = useState({});
     const [showProfilePictureModal, setShowProfilePictureModal] =
         useState(false);

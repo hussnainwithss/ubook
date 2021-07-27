@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
-import { updateUserInfo } from 'redux/userSlice';
+iimport { updateUserInfo } from 'redux/userSlice';
 import { updateUserCoverPicture } from 'api';
 const CoverPicture = ({ picture }) => {
     return (
@@ -14,8 +13,6 @@ const CoverPicture = ({ picture }) => {
 };
 
 const UserCoverPicture = ({ allowEdit, picture }) => {
-    const [cookies] = useCookies(['authToken']);
-    const TOKEN = cookies.authToken;
     const [cover_picture, setCoverPicture] = useState({});
     const [showCoverPictureModal, setShowCoverPictureModal] = useState(false);
     const { user } = useSelector((state) => state.user);

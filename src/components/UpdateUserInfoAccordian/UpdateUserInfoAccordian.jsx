@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Accordion, Card, Row, Col, Form, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import ContextAwareToggle from 'components/ContextAwareToggle/ContextAwareToggle';
 import { updateUserInfo } from 'redux/userSlice';
 import { updateUserProfile, changeUserPassword, setAuthToken } from 'api';
@@ -28,8 +26,6 @@ const UpdateUserInfoAccordian = () => {
     const [new_password, setNewPassword] = useState('');
     const [confirm_new_password, setConfirmPassword] = useState('');
     const [updatedUserInfoData, setUpdatedUserInfoData] = useState({});
-    const [cookies, setCookie] = useCookies(['authToken']);
-    const TOKEN = cookies.authToken;
 
     const verifyNewPassword = () => {
         if (current_password === new_password) return false;

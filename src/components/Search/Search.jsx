@@ -30,7 +30,6 @@ const Search = () => {
         const requestData = {
             search: search_param,
         };
-        console.log(queryParams.toString());
         queryParams.forEach((value, key) => {
             requestData[key] = value;
         });
