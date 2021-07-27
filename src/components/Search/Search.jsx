@@ -6,6 +6,7 @@ import NavBar from 'components/NavBar/NavBar';
 import ProfileCard from 'components/ProfileCard/ProfileCard';
 import SearchFilters from 'components/SearchFilters/SearchFilters';
 import useQuery from 'utils/useQuery';
+import { API_BASE_PATH } from 'config';
 
 const Search = () => {
     const [queryParams, setQueryParams] = useState(useQuery());
@@ -41,18 +42,12 @@ const Search = () => {
         queryParams.forEach((value, key) => {
             requestData.params[key] = value;
         });
-        axios
-            .get('http://localhost:8000/api/search/', requestData)
-            .then((response) => {
-                setSearchResults(response.data);
-                setWorkFilters(getFiltersFromData('work', response.data));
-                setEducationFilters(
-                    getFiltersFromData('education', response.data)
-                );
-                setHometownFilters(
-                    getFiltersFromData('hometown', response.data)
-                );
-            });
+        axios.get(`${API_BASE_PATH}/search/`, requestData).then((response) => {
+            setSearchResults(response.data);
+            setWorkFilters(getFiltersFromData('work', response.data));
+            setEducationFilters(getFiltersFromData('education', response.data));
+            setHometownFilters(getFiltersFromData('hometown', response.data));
+        });
     };
     useEffect(getSearchResults, [queryParams]);
 

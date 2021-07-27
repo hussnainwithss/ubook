@@ -4,6 +4,7 @@ import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserInfo } from 'redux/userSlice';
+import { API_BASE_PATH } from 'config';
 
 const ProfilePicture = ({ picture }) => {
     return (
@@ -43,7 +44,7 @@ const UserProfilePicture = ({ allowEdit, picture, userName, userAge }) => {
         };
         axios
             .patch(
-                'http://localhost:8000/api/update-profile-pictures/',
+                `${API_BASE_PATH}/update-profile-pictures/`,
                 PictureData,
                 headers
             )

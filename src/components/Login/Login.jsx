@@ -6,6 +6,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { loginPending, loginSuccessful, loginFail } from 'redux/authSlice';
 import { setMessage } from 'redux/messageAlertSlice';
+import { API_BASE_PATH } from 'config';
 
 const Login = () => {
     const [userName, setUserName] = useState('');
@@ -25,7 +26,7 @@ const Login = () => {
             password: userPassword,
         };
         axios
-            .post('http://localhost:8000/api/login/', userLoginCreds)
+            .post(`${API_BASE_PATH}/login/`, userLoginCreds)
             .then((response) => {
                 let date = new Date();
                 const cookies_params = {

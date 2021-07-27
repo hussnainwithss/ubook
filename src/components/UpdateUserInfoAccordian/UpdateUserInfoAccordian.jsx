@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import ContextAwareToggle from 'components/ContextAwareToggle/ContextAwareToggle';
 import { updateUserInfo } from 'redux/userSlice';
+import { API_BASE_PATH } from 'config';
 
 const UpdateUserInfoAccordian = () => {
     const { user } = useSelector((state) => state.user);
@@ -42,15 +43,11 @@ const UpdateUserInfoAccordian = () => {
         if (Object.keys(updatedUserInfoData).length === 0) return;
 
         axios
-            .patch(
-                'http://localhost:8000/api/update-profile/',
-                updatedUserInfoData,
-                {
-                    headers: {
-                        Authorization: `Token ${TOKEN}`,
-                    },
-                }
-            )
+            .patch(`${API_BASE_PATH}/update-profile/`, updatedUserInfoData, {
+                headers: {
+                    Authorization: `Token ${TOKEN}`,
+                },
+            })
             .then((response) => {
                 dispatch(updateUserInfo(response.data));
             });
@@ -67,15 +64,11 @@ const UpdateUserInfoAccordian = () => {
             confirm_new_password,
         };
         axios
-            .patch(
-                'http://localhost:8000/api/change-password/',
-                newPasswordData,
-                {
-                    headers: {
-                        Authorization: `Token ${TOKEN}`,
-                    },
-                }
-            )
+            .patch(`${API_BASE_PATH}/change-password/`, newPasswordData, {
+                headers: {
+                    Authorization: `Token ${TOKEN}`,
+                },
+            })
             .then((response) => {
                 setCookie('authToken', response.data.token, {
                     path: '/',

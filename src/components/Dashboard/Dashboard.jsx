@@ -10,6 +10,7 @@ import {
     loadUserFailed,
     updateUserPosts,
 } from 'redux/userSlice';
+import { API_BASE_PATH } from 'config';
 
 const Dashboard = () => {
     const [cookies] = useCookies(['authToken']);
@@ -33,12 +34,10 @@ const Dashboard = () => {
                 id,
             };
 
-        axios
-            .get('http://localhost:8000/api/post/', requestData)
-            .then((response) => {
-                setPosts(response.data);
-                if (!id) updateUserPosts(response.data);
-            });
+        axios.get(`${API_BASE_PATH}/post/`, requestData).then((response) => {
+            setPosts(response.data);
+            if (!id) updateUserPosts(response.data);
+        });
     };
     useEffect(getPostsData, [LoggedInUserPosts, id]);
 
@@ -54,12 +53,10 @@ const Dashboard = () => {
                 id,
             };
 
-        axios
-            .get('http://localhost:8000/api/user/', requestData)
-            .then((response) => {
-                if (!id) dispatch(loadUserSuccess(response.data));
-                setUser(response.data);
-            });
+        axios.get(`${API_BASE_PATH}/user/`, requestData).then((response) => {
+            if (!id) dispatch(loadUserSuccess(response.data));
+            setUser(response.data);
+        });
     };
     useEffect(getUserData, [id]);
 

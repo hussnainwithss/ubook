@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { loginPending, loginSuccessful } from 'redux/authSlice';
 import { setMessage } from 'redux/messageAlertSlice';
+import { API_BASE_PATH } from 'config';
 
 const RegistrationForm = () => {
     const [first_name, setFirstName] = useState('');
@@ -33,7 +34,7 @@ const RegistrationForm = () => {
         };
 
         axios
-            .post('http://localhost:8000/api/register/', userRegistrationData)
+            .post(`${API_BASE_PATH}/register/`, userRegistrationData)
             .then((response) => {
                 console.log(response);
                 dispatch(loginPending());
@@ -47,7 +48,7 @@ const RegistrationForm = () => {
                 };
 
                 axios
-                    .post('http://localhost:8000/api/login/', userLoginCreds)
+                    .post(`${API_BASE_PATH}/login/`, userLoginCreds)
                     .then((response) => {
                         setCookie(
                             'authToken',

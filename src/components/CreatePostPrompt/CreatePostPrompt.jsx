@@ -4,6 +4,7 @@ import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { updateUserPosts } from 'redux/userSlice';
+import { API_BASE_PATH } from 'config';
 
 const CreatePostPrompt = ({ setNewPost }) => {
     const [cookies] = useCookies(['authToken']);
@@ -25,7 +26,7 @@ const CreatePostPrompt = ({ setNewPost }) => {
             },
         };
         axios
-            .post('http://localhost:8000/api/post/', postData, headers)
+            .post(`${API_BASE_PATH}/post/`, postData, headers)
             .then((response) => {
                 setNewPost(response.data);
                 dispatch(updateUserPosts(response.data));
