@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import UserProfile from './UserProfile';
+import { useCookies } from 'react-cookie';
+import UserProfile from 'components/Dashboard/UserProfile';
 import {
     loadUserPending,
     loadUserSuccess,
     loadUserFailed,
     updateUserPosts,
-} from '../../redux/userSlice';
-import { useCookies } from 'react-cookie';
+} from 'redux/userSlice';
+
 const Dashboard = () => {
     const [cookies] = useCookies(['authToken']);
     const TOKEN = cookies.authToken;
@@ -27,11 +28,11 @@ const Dashboard = () => {
                 Authorization: `Token ${TOKEN}`,
             },
         };
-        if (id) {
+        if (id)
             requestData.params = {
                 id,
             };
-        }
+
         axios
             .get('http://localhost:8000/api/post/', requestData)
             .then((response) => {
@@ -48,11 +49,11 @@ const Dashboard = () => {
                 Authorization: `Token ${TOKEN}`,
             },
         };
-        if (id) {
+        if (id)
             requestData.params = {
                 id,
             };
-        }
+
         axios
             .get('http://localhost:8000/api/user/', requestData)
             .then((response) => {

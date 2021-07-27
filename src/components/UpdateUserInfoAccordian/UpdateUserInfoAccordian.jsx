@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Accordion, Card, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import ContextAwareToggle from '../ContextAwareToggle/ContextAwareToggle';
 import { useCookies } from 'react-cookie';
-import { updateUserInfo } from '../../redux/userSlice';
+import ContextAwareToggle from 'components/ContextAwareToggle/ContextAwareToggle';
+import { updateUserInfo } from 'redux/userSlice';
+
 const UpdateUserInfoAccordian = () => {
     const { user } = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -29,20 +30,17 @@ const UpdateUserInfoAccordian = () => {
     const TOKEN = cookies.authToken;
 
     const verifyNewPassword = () => {
-        if (current_password === new_password) {
-            return false;
-        }
-        if (new_password !== confirm_new_password) {
-            return false;
-        }
+        if (current_password === new_password) return false;
+
+        if (new_password !== confirm_new_password) return false;
+
         return true;
     };
 
     const updateProfileInfoHandler = (e) => {
         e.preventDefault();
-        if (Object.keys(updatedUserInfoData).length === 0) {
-            return;
-        }
+        if (Object.keys(updatedUserInfoData).length === 0) return;
+
         axios
             .patch(
                 'http://localhost:8000/api/update-profile/',
@@ -57,6 +55,7 @@ const UpdateUserInfoAccordian = () => {
                 dispatch(updateUserInfo(response.data));
             });
     };
+
     const updatePasswordHandler = (e) => {
         e.preventDefault();
         const ValidNewPassword = verifyNewPassword();
@@ -84,6 +83,7 @@ const UpdateUserInfoAccordian = () => {
                 });
             });
     };
+
     return (
         <Accordion defaultActiveKey="0">
             <Card>

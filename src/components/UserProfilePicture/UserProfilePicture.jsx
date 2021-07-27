@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUserInfo } from '../../redux/userSlice';
 import { useCookies } from 'react-cookie';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserInfo } from 'redux/userSlice';
+
 const ProfilePicture = ({ picture }) => {
     return (
         <Image

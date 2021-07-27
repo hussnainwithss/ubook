@@ -3,23 +3,22 @@ import { useDispatch } from 'react-redux';
 import { Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { updateUserPosts } from '../../redux/userSlice';
+import { updateUserPosts } from 'redux/userSlice';
+
 const CreatePostPrompt = ({ setNewPost }) => {
     const [cookies] = useCookies(['authToken']);
     const TOKEN = cookies.authToken;
     const [content, setContent] = useState('');
     const [image, setImage] = useState('');
     const dispatch = useDispatch();
+
     function createPostHandler(e) {
         e.preventDefault();
         const postData = new FormData();
         if (content) postData.append('content', content);
-        else {
-            return;
-        }
-        if (image) {
-            postData.append('image', image, image.name);
-        }
+        else return;
+
+        if (image) postData.append('image', image, image.name);
         const headers = {
             headers: {
                 Authorization: `Token ${TOKEN}`,
@@ -37,6 +36,7 @@ const CreatePostPrompt = ({ setNewPost }) => {
         setContent('');
         setImage('');
     }
+
     return (
         <Card className="mb-5">
             <Card.Body>
@@ -49,14 +49,14 @@ const CreatePostPrompt = ({ setNewPost }) => {
                             className="post-textarea"
                             onChange={(e) => setContent(e.target.value)}
                             value={content}
-                        ></Form.Control>
+                        />
                     </div>
                     <div className="mb-3">
                         <Form.Label>Upload Image</Form.Label>
                         <Form.File
                             accept="image/*"
                             onChange={(e) => setImage(e.target.files[0])}
-                        ></Form.File>
+                        />
                     </div>
                     <Button varriant="primary" type="submit">
                         Post

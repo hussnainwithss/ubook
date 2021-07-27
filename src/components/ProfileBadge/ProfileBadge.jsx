@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 
-let ProfileBadge = ({ picture, name }) => {
+const ProfileBadge = ({ picture, name }) => {
     return (
         <div>
             <Link to="/settings">

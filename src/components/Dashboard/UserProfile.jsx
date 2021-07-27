@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
-import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
-import NavBar from '../NavBar/NavBar';
-import CreatePostPrompt from '../CreatePostPrompt/CreatePostPrompt';
-import Post from '../Post/Post';
-import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
-import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
+import UserInfoAccordian from 'components/UserInfoAccordian/UserInfoAccordian';
+import NavBar from 'components/NavBar/NavBar';
+import CreatePostPrompt from 'components/CreatePostPrompt/CreatePostPrompt';
+import Post from 'components/Post/Post';
+import UserCoverPicture from 'components/UserCoverPicture/UserCoverPicture';
+import UserProfilePicture from 'components/UserProfilePicture/UserProfilePicture';
 
 const UserProfile = ({ allowEdit, posts, user }) => {
     const [newPost, setNewPost] = useState({});
+
     return (
         <>
             <NavBar />

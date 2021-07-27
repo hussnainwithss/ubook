@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Form, Button } from 'react-bootstrap';
 
 const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
+
 const SearchFilters = ({
     workFilters,
     educationFilters,
@@ -17,6 +18,7 @@ const SearchFilters = ({
     const initialQueryParams = new URLSearchParams({
         search: searchParams,
     });
+
     const searchFormSubmitHandler = (e) => {
         e.preventDefault();
         const updatedQueryParams = new URLSearchParams(initialQueryParams);
@@ -31,9 +33,11 @@ const SearchFilters = ({
             );
         setQueryParams(updatedQueryParams);
     };
+
     const searchFormResetHandler = (e) => {
         setQueryParams(initialQueryParams);
     };
+
     return (
         <Card>
             <Card.Header>Search Filters</Card.Header>

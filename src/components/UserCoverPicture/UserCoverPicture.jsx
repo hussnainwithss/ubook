@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserInfo } from '../../redux/userSlice';
 import { useCookies } from 'react-cookie';
+import { updateUserInfo } from 'redux/userSlice';
+
 const CoverPicture = ({ picture }) => {
     return (
         <Image
@@ -12,6 +13,7 @@ const CoverPicture = ({ picture }) => {
         />
     );
 };
+
 const UserCoverPicture = ({ allowEdit, picture }) => {
     const [cookies] = useCookies(['authToken']);
     const TOKEN = cookies.authToken;

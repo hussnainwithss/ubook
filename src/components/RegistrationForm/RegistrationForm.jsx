@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Form, Button, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginPending, loginSuccessful } from '../../redux/authSlice';
-import { setMessage } from '../../redux/messageAlertSlice';
+import { loginPending, loginSuccessful } from 'redux/authSlice';
+import { setMessage } from 'redux/messageAlertSlice';
+
 const RegistrationForm = () => {
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
@@ -67,6 +68,7 @@ const RegistrationForm = () => {
                 if (error.response) console.log(error.response.data);
             });
     }
+
     return (
         <div className="register-main">
             <h3>Register Now</h3>

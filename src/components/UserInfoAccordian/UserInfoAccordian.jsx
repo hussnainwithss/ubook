@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accordion, Card, Row, Col } from 'react-bootstrap';
-import ContextAwareToggle from '../ContextAwareToggle/ContextAwareToggle';
+import ContextAwareToggle from 'components/ContextAwareToggle/ContextAwareToggle';
+
 const UserInfoAccordian = ({ userInfo }) => {
     return (
         <Accordion defaultActiveKey="0">

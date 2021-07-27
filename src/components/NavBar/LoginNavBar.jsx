@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Login from '../Login/Login';
+import Login from 'components/Login/Login';
 
-let LoginNavBar = () => {
+const LoginNavBar = () => {
     return (
         <Navbar className="navbar-color d-flex justify-content-between">
             <Link to="/dashboard">

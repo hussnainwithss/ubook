@@ -1,7 +1,6 @@
-import { findByDisplayValue } from '@testing-library/dom';
 import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
-import ProfileBadge from '../ProfileBadge/ProfileBadge';
+
 const Post = ({ post, userName, profilePicture }) => {
     return (
         <Card className="mb-3">

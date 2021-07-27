@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'react-bootstrap/Image';
-let Welcome = () => {
+
+const Welcome = () => {
     return (
         <div className="register-main">
             <h2>UBook</h2>

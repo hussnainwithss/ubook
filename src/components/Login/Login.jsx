@@ -4,23 +4,19 @@ import { useHistory } from 'react-router';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { loginPending, loginSuccessful, loginFail } from 'redux/authSlice';
+import { setMessage } from 'redux/messageAlertSlice';
 
-import {
-    loginPending,
-    loginSuccessful,
-    loginFail,
-} from '../../redux/authSlice';
-import { setMessage } from '../../redux/messageAlertSlice';
-
-let Login = () => {
+const Login = () => {
     const [userName, setUserName] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
-    const [_, setCookie] = useCookies(['authToken']);
+    const [cookie, setCookie] = useCookies(['authToken']);
     const [networkError, setNetworkError] = useState(false);
     const history = useHistory();
     const { isLoading, error } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+
     function loginUser(e) {
         e.preventDefault();
         dispatch(loginPending());
@@ -72,6 +68,7 @@ let Login = () => {
                 }
             });
     }
+
     return (
         <Form className="nav white-text" onSubmit={loginUser}>
             <Form.Group className="mr-2 mb-0">

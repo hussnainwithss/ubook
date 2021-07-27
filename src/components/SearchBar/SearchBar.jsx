@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router';
 import { Form } from 'react-bootstrap';
 
-let SearchBar = ({ searchParams }) => {
+const SearchBar = ({ searchParams }) => {
     const [searchParam, setsearchParam] = useState(searchParams);
     const [redirectToSearchPage, setRedirectToSearchPage] = useState(false);
 
@@ -10,12 +10,14 @@ let SearchBar = ({ searchParams }) => {
         setRedirectToSearchPage(true);
         e.preventDefault();
     };
+
     const updateSearchParam = (e) => {
         setsearchParam(e.target.value);
     };
-    if (redirectToSearchPage === true) {
+
+    if (redirectToSearchPage === true)
         return <Redirect to={`/search/?search=${searchParam}`} />;
-    }
+
     return (
         <Form className="d-flex" onSubmit={(e) => handleSubmit(e)}>
             <Form.Control
@@ -24,7 +26,7 @@ let SearchBar = ({ searchParams }) => {
                 placeholder="Search UBook"
                 onChange={(e) => updateSearchParam(e)}
                 value={searchParam ? searchParam : ''}
-            ></Form.Control>
+            />
         </Form>
     );
 };

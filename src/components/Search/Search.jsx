@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
-import NavBar from '../NavBar/NavBar';
-import ProfileCard from '../ProfileCard/ProfileCard';
-import SearchFilters from '../SearchFilters/SearchFilters';
-import useQuery from '../../utils/useQuery';
 import { useCookies } from 'react-cookie';
+import NavBar from 'components/NavBar/NavBar';
+import ProfileCard from 'components/ProfileCard/ProfileCard';
+import SearchFilters from 'components/SearchFilters/SearchFilters';
+import useQuery from 'utils/useQuery';
+
 const Search = () => {
     const [queryParams, setQueryParams] = useState(useQuery());
     const [searchResults, setSearchResults] = useState([]);
@@ -53,7 +54,6 @@ const Search = () => {
                 );
             });
     };
-
     useEffect(getSearchResults, [queryParams]);
 
     return (

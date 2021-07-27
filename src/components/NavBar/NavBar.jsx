@@ -1,10 +1,12 @@
 import React from 'react';
-import LoginNavBar from './LoginNavBar';
-import DefaultNavBar from './DefaultNavBar';
 import { useSelector } from 'react-redux';
-let NavBar = ({ searchParams }) => {
+import LoginNavBar from 'components/NavBar/LoginNavBar';
+import DefaultNavBar from 'components/NavBar/DefaultNavBar';
+
+const NavBar = ({ searchParams }) => {
     const { isAuthenticated } = useSelector((state) => state.auth);
     const { user } = useSelector((state) => state.user);
+
     return isAuthenticated ? (
         user && (
             <DefaultNavBar

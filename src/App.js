@@ -3,22 +3,21 @@ import { Alert, Fade } from 'react-bootstrap';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
-import Dashboard from './components/Dashboard/Dashboard';
-import HomeScreen from './components/HomeScreen/HomeScreen';
-import Search from './components/Search/Search';
-import Settings from './components/Settings/Settings';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import PublicRoute from './components/PublicRoute/PublicRoute';
-import { loginSuccessful } from '../src/redux/authSlice';
+import Dashboard from 'components/Dashboard/Dashboard';
+import HomeScreen from 'components/HomeScreen/HomeScreen';
+import Search from 'components/Search/Search';
+import Settings from 'components/Settings/Settings';
+import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
+import PublicRoute from 'components/PublicRoute/PublicRoute';
+import { loginSuccessful } from 'redux/authSlice';
 function App() {
     const { message, type } = useSelector((state) => state.messageAlert);
     const { isAuthenticated } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const [cookies] = useCookies(['authToken']);
     const handleCookiesOnStartUp = () => {
-        if (cookies['authToken'] && !isAuthenticated) {
+        if (cookies['authToken'] && !isAuthenticated)
             dispatch(loginSuccessful());
-        }
     };
     useEffect(handleCookiesOnStartUp);
     return (

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-
-import NavBar from '../NavBar/NavBar';
-import UserCoverPicture from '../UserCoverPicture/UserCoverPicture';
-import UserProfilePicture from '../UserProfilePicture/UserProfilePicture';
-import UserInfoAccordian from '../UserInfoAccordian/UserInfoAccordian';
-import UpdateUserInfoAccordian from '../UpdateUserInfoAccordian/UpdateUserInfoAccordian';
+import { useSelector } from 'react-redux';
+import NavBar from 'components/NavBar/NavBar';
+import UserCoverPicture from 'components/UserCoverPicture/UserCoverPicture';
+import UserProfilePicture from 'components/UserProfilePicture/UserProfilePicture';
+import UserInfoAccordian from 'components/UserInfoAccordian/UserInfoAccordian';
+import UpdateUserInfoAccordian from 'components/UpdateUserInfoAccordian/UpdateUserInfoAccordian';
 
 const Settings = () => {
     const { user } = useSelector((state) => state.user);
