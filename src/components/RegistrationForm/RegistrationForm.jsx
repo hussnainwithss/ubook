@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Form, Button, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router';
-import { loginPending, loginSuccessful } from 'redux/authSlice';
-import { setMessage } from 'redux/messageAlertSlice';
-import { registerUser, authenticateUser, setAuthToken } from 'api';
-import { setUserToken } from 'utils/user';
+import { userRegistrationHandler } from 'components/RegistrationForm/registrationHandler';
 
 const RegistrationForm = () => {
     const [first_name, setFirstName] = useState('');
@@ -19,42 +16,26 @@ const RegistrationForm = () => {
     const dispatch = useDispatch();
     const { isLoading, error } = useSelector((state) => state.auth);
 
-    function userRegistrationHandler(e) {
-        e.preventDefault();
-        registerUser(
-            first_name,
-            last_name,
-            email,
-            password,
-            confirm_password,
-            birthday,
-            gender
-        )
-            .then((response) => {
-                dispatch(loginPending());
-                authenticateUser(email, password).then((response) => {
-                    setUserToken(response.data.token);
-                    setAuthToken(response.data.token);
-                    dispatch(loginSuccessful());
-                    dispatch(
-                        setMessage({
-                            message: `Registration Successful! Welcome! ${first_name} ${last_name} `,
-                            type: 'success',
-                        })
-                    );
-                    history.push('/dashboard/');
-                });
-            })
-            .catch((error) => {
-                if (error.response) console.log(error.response.data);
-            });
-    }
-
     return (
         <div className="register-main">
             <h3>Register Now</h3>
             <hr />
-            <Form onSubmit={userRegistrationHandler}>
+            <Form
+                onSubmit={(e) =>
+                    userRegistrationHandler(
+                        e,
+                        first_name,
+                        last_name,
+                        email,
+                        password,
+                        confirm_password,
+                        birthday,
+                        gender,
+                        history,
+                        dispatch
+                    )
+                }
+            >
                 <Form.Row>
                     <Form.Group as={Col} className="mb-0">
                         <Form.Label className="mb-0">First Name</Form.Label>

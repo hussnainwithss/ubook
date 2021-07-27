@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, Button, Modal, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-iimport { updateUserInfo } from 'redux/userSlice';
+import { updateUserInfo } from 'redux/userSlice';
 import { updateUserCoverPicture } from 'api';
 const CoverPicture = ({ picture }) => {
     return (
