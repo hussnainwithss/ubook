@@ -1,4 +1,7 @@
 {
     "singleQuote":true,
-    "parser":"babel"
+    "parser":"babel",
+    "tabWidth": 4,
+    "indent": 4
+ 
 }
