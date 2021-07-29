@@ -10,11 +10,12 @@ export function deleteUserInfo() {
   return { type: SIGNOUT };
 }
 
-export const authenticateUserAction = (email, password) => (dispatch) => {
-  return authenticateUser(email, password)
+export const authenticateUserAction = (username, password) => (dispatch) => {
+  return authenticateUser(username, password)
     .then((resp) => {
       if (resp) {
-        dispatch(setAuthUser(resp));
+        console.log(resp.data.token);
+        dispatch(setAuthUser(resp.data));
         setUserToken(resp);
         return true;
       }
@@ -25,35 +26,33 @@ export const authenticateUserAction = (email, password) => (dispatch) => {
     });
 };
 
-export const registerUserAction = (email, password, firstName, lastName) => (
-  dispatch
-) => {
-  return registerUser(email, password, firstName, lastName)
-    .then((resp) => {
-      if (resp) {
-        dispatch(setAuthUser(resp));
-        setUserToken(resp);
-        return true;
-      }
-      return Promise.reject(resp);
-    })
-    .catch((e) => {
-      return Promise.reject(e);
-    });
-};
+export const registerUserAction =
+  (email, password, firstName, lastName) => (dispatch) => {
+    return registerUser(email, password, firstName, lastName)
+      .then((resp) => {
+        if (resp) {
+          dispatch(setAuthUser(resp));
+          setUserToken(resp);
+          return true;
+        }
+        return Promise.reject(resp);
+      })
+      .catch((e) => {
+        return Promise.reject(e);
+      });
+  };
 
-export const updateProfileAction = (email, password, firstName, lastName) => (
-  dispatch
-) => {
-  return updateProfile(email, password, firstName, lastName)
-    .then((resp) => {
-      if (resp) {
-        setUserToken(resp);
-        return true;
-      }
-      return Promise.reject(resp);
-    })
-    .catch((e) => {
-      return Promise.reject(e);
-    });
-};
+export const updateProfileAction =
+  (email, password, firstName, lastName) => (dispatch) => {
+    return updateProfile(email, password, firstName, lastName)
+      .then((resp) => {
+        if (resp) {
+          setUserToken(resp);
+          return true;
+        }
+        return Promise.reject(resp);
+      })
+      .catch((e) => {
+        return Promise.reject(e);
+      });
+  };

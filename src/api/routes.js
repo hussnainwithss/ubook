@@ -5,9 +5,9 @@ import replace from 'lodash/replace';
 import { API_BASE_PATH } from 'config';
 
 const ROUTES_OBJ = {
-  login: `${API_BASE_PATH}/login`,
-  registerUser: `${API_BASE_PATH}/register`,
-  userProfile: `${API_BASE_PATH}/register/<userId>`,
+  login: `${API_BASE_PATH}/login/`,
+  registerUser: `${API_BASE_PATH}/register/`,
+  userProfile: `${API_BASE_PATH}/register/<userId>/`,
 };
 
 /**

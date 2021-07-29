@@ -59,8 +59,8 @@ export const registerUser = (email, password, firstName, lastName) => {
   return postRequest(route, data);
 };
 
-export const authenticateUser = (email, password) => {
-  const data = { email, password };
+export const authenticateUser = (username, password) => {
+  const data = { username, password };
   const route = getRoute('login');
   return postRequest(route, data);
 };

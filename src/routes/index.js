@@ -3,8 +3,10 @@ import map from 'lodash/map';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import siteLayout from 'layouts/Site';
 import dashboardLayout from 'layouts/Dashboard';
+import HomePageLayout from 'layouts/HomePage';
 import Login from 'pages/Auth/Login';
 import Logout from 'pages/Auth/Logout';
+import RegistrationForm from 'components/RegistrationForm';
 const Signup = lazy(() => import('pages/Auth/Signup'));
 const ChangePassword = lazy(() => import('pages/Auth/ChangePassword'));
 const Dashboard = lazy(() => import('pages/Dashboard'));
@@ -56,7 +58,7 @@ export const AppRoutes = {
   LOGIN: {
     path: '/login',
     name: 'Login',
-    component: siteLayout(Login),
+    component: HomePageLayout(RegistrationForm),
   },
   LOGOUT: {
     path: '/logout',

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavDropdown } from 'react-bootstrap';
+import { NavDropdown, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export const AppTitle = styled(Link)`
@@ -23,4 +23,8 @@ export const UserDropDown = styled(NavDropdown)`
 export const NavDropDownLink = styled(Link)`
   padding: 10px;
   color: #000;
+`;
+
+export const NavBar = styled(Navbar)`
+  background: #3b5998;
 `;

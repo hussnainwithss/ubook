@@ -1,13 +1,14 @@
 import { AUTH_USER, SIGNOUT } from 'pages/Auth/ducks/action-types';
 
-const initialState = { user: {} };
+const initialState = { token: null, user: {}, isAuthenticated: false };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case AUTH_USER:
       state = {
         ...state,
-        user: { token: action.payload.token, ...action.payload.user },
+        token: action.payload.token,
+        isAuthenticated: true,
       };
       break;
     case SIGNOUT:
