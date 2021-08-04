@@ -7,7 +7,7 @@ const HomePage = (Content) => {
   return (props) => {
     return (
       <>
-        <Header />
+        <Header history={props.history} />
         <Container>
           <Row>
             <Col md='8'>

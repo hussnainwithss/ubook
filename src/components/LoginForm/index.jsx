@@ -23,29 +23,26 @@ const LoginForm = ({ authenticateUser, history }) => {
   });
 
   const handleSubmit = (values, { setStatus, setErrors, setSubmitting }) => {
-    const { username, password } = values;
-    authenticateUser(username, password)
+    const { username, password, remember_me } = values;
+    authenticateUser(username, password, remember_me)
       .then((resp) => {
         if (resp) {
-          console.log(resp);
-          // history.push(AppRoutes.DASHBOARD.path);
+          history.push(AppRoutes.DASHBOARD.path);
         }
-        setSubmitting(false);
       })
       .catch((error) => {
-        console.log(error.response);
-        // history.push(AppRoutes.DASHBOARD.path);
+        history.push(AppRoutes.DASHBOARD.path);
         let fieldError = {};
         if (error && error.message) {
-          console.log(error.response);
+          console.log(error.message);
         }
-        if (error.response.data.non_field_errors) {
+        if (error.response && error.response.data.non_field_errors) {
           setStatus({ error: error.response.data.non_field_errors[0] });
         }
-        console.log(fieldError);
+
         setErrors(fieldError);
-        setSubmitting(false);
       });
+    setSubmitting(false);
   };
   return (
     <Formik
@@ -109,8 +106,8 @@ const LoginForm = ({ authenticateUser, history }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    authenticateUser: (username, password) =>
-      dispatch(authenticateUserAction(username, password)),
+    authenticateUser: (username, password, remember_me) =>
+      dispatch(authenticateUserAction(username, password, remember_me)),
   };
 };
 

@@ -1,6 +1,19 @@
-import { AUTH_USER, SIGNOUT } from 'pages/Auth/ducks/action-types';
+import {
+  AUTH_USER,
+  SIGNOUT,
+  FETCH_USER,
+  UPDATE_AUTH_TOKEN,
+  UPDATE_AUTH_USER_INFO,
+} from 'pages/Auth/ducks/action-types';
 import { setUserToken } from 'utils/user';
-import { authenticateUser, registerUser, updateProfile } from 'api';
+import {
+  authenticateUser,
+  registerUser,
+  getUserInfo,
+  setAuthToken,
+  changeUserPassword,
+  updateUserProfile,
+} from 'api';
 
 export function setAuthUser(payload) {
   return { type: AUTH_USER, payload };
@@ -10,29 +23,25 @@ export function deleteUserInfo() {
   return { type: SIGNOUT };
 }
 
-export const authenticateUserAction = (username, password) => (dispatch) => {
-  return authenticateUser(username, password)
-    .then((resp) => {
-      if (resp) {
-        console.log(resp.data.token);
-        dispatch(setAuthUser(resp.data));
-        setUserToken(resp);
-        return true;
-      }
-      return Promise.reject(resp);
-    })
-    .catch((e) => {
-      return Promise.reject(e);
-    });
-};
+export function fetchAuthUserInfo(payload) {
+  return { type: FETCH_USER, payload };
+}
+export function updateAuthToken(payload) {
+  return { type: UPDATE_AUTH_TOKEN, payload };
+}
 
-export const registerUserAction =
-  (email, password, firstName, lastName) => (dispatch) => {
-    return registerUser(email, password, firstName, lastName)
+export function updateAuthUserInfo(payload) {
+  return { type: UPDATE_AUTH_USER_INFO, payload };
+}
+
+export const authenticateUserAction =
+  (username, password, remember_me) => (dispatch) => {
+    return authenticateUser(username, password, remember_me)
       .then((resp) => {
         if (resp) {
-          dispatch(setAuthUser(resp));
-          setUserToken(resp);
+          dispatch(setAuthUser(resp.data));
+          setUserToken(resp.data.token, remember_me);
+          setAuthToken(resp.data.token);
           return true;
         }
         return Promise.reject(resp);
@@ -42,12 +51,80 @@ export const registerUserAction =
       });
   };
 
-export const updateProfileAction =
-  (email, password, firstName, lastName) => (dispatch) => {
-    return updateProfile(email, password, firstName, lastName)
+export const registerUserAction =
+  (
+    email,
+    password,
+    confirm_password,
+    first_name,
+    last_name,
+    gender,
+    birthday
+  ) =>
+  (dispatch) => {
+    return registerUser(
+      email,
+      password,
+      confirm_password,
+      first_name,
+      last_name,
+      gender,
+      birthday
+    )
       .then((resp) => {
         if (resp) {
-          setUserToken(resp);
+          dispatch(setAuthUser(resp.data));
+          setUserToken(resp.data.token);
+          setAuthToken(resp.data.token);
+          return true;
+        }
+        return Promise.reject(resp);
+      })
+      .catch((e) => {
+        return Promise.reject(e);
+      });
+  };
+
+export const updateAuthUserInfoAction = (updatedInfo) => (dispatch) => {
+  return updateUserProfile(updatedInfo)
+    .then((resp) => {
+      if (resp) {
+        dispatch(updateAuthUserInfo(resp.data));
+        return true;
+      }
+      return Promise.reject(resp);
+    })
+    .catch((e) => {
+      return Promise.reject(e);
+    });
+};
+
+export const fetchUserInfoAction = () => (dispatch) => {
+  return getUserInfo()
+    .then((resp) => {
+      if (resp) {
+        dispatch(fetchAuthUserInfo(resp));
+        return true;
+      }
+      return Promise.reject(resp);
+    })
+    .catch((e) => {
+      return Promise.reject(e);
+    });
+};
+
+export const updateUserPasswordAction =
+  (current_password, new_password, confirm_new_password) => (dispatch) => {
+    return changeUserPassword(
+      current_password,
+      new_password,
+      confirm_new_password
+    )
+      .then((resp) => {
+        if (resp) {
+          dispatch(updateAuthToken(resp.data));
+          setUserToken(resp.data.token);
+          setAuthToken(resp.data.token);
           return true;
         }
         return Promise.reject(resp);

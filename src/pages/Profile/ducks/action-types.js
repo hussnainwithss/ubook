@@ -1,1 +1,1 @@
-export const SET_PROFILE = 'SET_PROFILE';
+export const UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE';

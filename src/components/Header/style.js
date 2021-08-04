@@ -27,4 +27,11 @@ export const NavDropDownLink = styled(Link)`
 
 export const NavBar = styled(Navbar)`
   background: #3b5998;
+  color: #fff;
+`;
+
+export const UserProfileLink = styled(Link)`
+  color: #fff;
+  padding: 10px;
+  padding-left: 0;
 `;
