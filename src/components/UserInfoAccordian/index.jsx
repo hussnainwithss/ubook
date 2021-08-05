@@ -8,7 +8,9 @@ const UserInfoAccordian = ({ userInfo }) => {
       <Card>
         <ContextAwareToggle eventKey='0'>Bio</ContextAwareToggle>
         <Accordion.Collapse eventKey='0'>
-          <Card.Body>{userInfo.bio}</Card.Body>
+          <Card.Body>
+            {userInfo.bio ? userInfo.bio : 'Something Cool Here....'}
+          </Card.Body>
         </Accordion.Collapse>
       </Card>
       <Card>

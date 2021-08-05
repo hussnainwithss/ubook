@@ -3,6 +3,8 @@ import {
   FETCH_USER,
   SIGNOUT,
   UPDATE_AUTH_TOKEN,
+  UPDATE_AUTH_USER_COVER_PICTURE,
+  UPDATE_AUTH_USER_PROFILE_PICTURE,
   UPDATE_AUTH_USER_INFO,
 } from 'pages/Auth/ducks/action-types';
 
@@ -36,6 +38,30 @@ function reducer(state = initialState, action) {
       state = {
         ...state,
         user: action.payload,
+      };
+      break;
+    case UPDATE_AUTH_USER_COVER_PICTURE:
+      state = {
+        ...state,
+        user: {
+          ...state.user,
+          profile: {
+            ...state.user.profile,
+            cover_picture: action.payload.cover_picture,
+          },
+        },
+      };
+      break;
+    case UPDATE_AUTH_USER_PROFILE_PICTURE:
+      state = {
+        ...state,
+        user: {
+          ...state.user,
+          profile: {
+            ...state.user.profile,
+            profile_picture: action.payload.profile_picture,
+          },
+        },
       };
       break;
     default:

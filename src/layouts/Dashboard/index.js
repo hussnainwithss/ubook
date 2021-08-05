@@ -7,7 +7,7 @@ const Dashboard = (Content) => {
     return (
       <>
         <Header />
-        <Container fluid>
+        <Container fluid className='p-0'>
           <Content {...props} />
         </Container>
       </>

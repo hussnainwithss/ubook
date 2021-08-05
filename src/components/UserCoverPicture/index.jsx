@@ -1,52 +1,82 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { Image, Button, Modal, Form as FormBS } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUserCoverPicture } from 'api';
+import { connect } from 'react-redux';
+import { Modal, Form as FormBS, Alert } from 'react-bootstrap';
+import * as Yup from 'yup';
+import { updateUserCoverPictureAction } from 'pages/Auth/ducks/actions';
+import {
+  CoverDiv,
+  CoverImage,
+  OverlayButton,
+  Overlay,
+  OverlayText,
+} from 'components/UserCoverPicture/style';
+import { FilledButton } from 'elements/Button';
+import cover from 'assets/img/cover.png';
 
 const CoverPicture = ({ picture }) => {
-  return (
-    <Image
-      src={picture ? picture : process.env.PUBLIC_URL + '/img/cover.png'}
-      className='w-100 cover-image'
-    />
-  );
+  return <CoverImage className='w-100 ' src={picture ? picture : cover} />;
 };
 
-const UserCoverPicture = ({ allowEdit, picture }) => {
-  const [cover_picture, setCoverPicture] = useState({});
+const UserCoverPicture = ({ picture, user, updateCoverPicture }) => {
+  const initialValues = { cover_picture: null };
+  const validationSchema = Yup.object({
+    cover_picture: Yup.mixed().required('Please Select Cover Picture First'),
+  });
   const [showCoverPictureModal, setShowCoverPictureModal] = useState(false);
-  const { user } = useSelector((state) => state.auth);
   const handleCoverPictureUploadModalShow = () =>
     setShowCoverPictureModal(true);
   const handleCoverPictureUploadModalClose = () =>
     setShowCoverPictureModal(false);
-  const coverPictureUploadHandler = (e) => {
-    e.preventDefault();
-    updateUserCoverPicture(cover_picture).then((response) => {
-      handleCoverPictureUploadModalClose();
-      console.log(response);
-    });
+
+  const coverPictureUploadHandler = (
+    values,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
+    const { cover_picture } = values;
+    updateCoverPicture(cover_picture)
+      .then((response) => {
+        setStatus({
+          type: 'success',
+          message: 'Cover Picture Updated Successfully!',
+        });
+        setTimeout(() => {
+          handleCoverPictureUploadModalClose();
+        }, 1000);
+      })
+      .catch((error) => {
+        let fieldErrors = {};
+        if (error && error.message) {
+          setStatus({ type: 'danger', message: error.message });
+          console.log(error.message);
+        }
+        if (error.response && error.response.cover_picture) {
+          setStatus({ type: 'danger', message: 'Something went wrong!' });
+          fieldErrors.cover_picture = error.response.cover_picture;
+        }
+        setErrors(fieldErrors);
+      });
+    setSubmitting(false);
   };
 
   return (
     <>
-      <div className='image1'>
-        {!allowEdit ? (
+      <CoverDiv>
+        {!user ? (
           <CoverPicture picture={picture} />
         ) : (
-          <Button
+          <OverlayButton
             onClick={handleCoverPictureUploadModalShow}
             variant='link'
-            className='picture-upload-button w-100 cover-image overlay-button'
+            className='w-100'
           >
             <CoverPicture picture={user.profile.cover_picture} />
-            <div className='overlay overlay-cover'>
-              <div className='text'>Update Cover Picture</div>
-            </div>
-          </Button>
+            <Overlay>
+              <OverlayText>Update Cover Picture</OverlayText>
+            </Overlay>
+          </OverlayButton>
         )}
-      </div>
+      </CoverDiv>
       <Modal
         show={showCoverPictureModal}
         onHide={handleCoverPictureUploadModalClose}
@@ -54,29 +84,55 @@ const UserCoverPicture = ({ allowEdit, picture }) => {
         <Modal.Header closeButton>
           <Modal.Title>Upload New Cover Picture</Modal.Title>
         </Modal.Header>
-        <FormBS onSubmit={coverPictureUploadHandler}>
-          <Modal.Body>
-            <FormBS.File
-              accept='image/*'
-              onChange={(e) => setCoverPicture(e.target.files[0])}
-              required
-            ></FormBS.File>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant='secondary'
-              onClick={handleCoverPictureUploadModalClose}
-            >
-              Close
-            </Button>
-            <Button variant='primary' type='submit'>
-              Upload
-            </Button>
-          </Modal.Footer>
-        </FormBS>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={coverPictureUploadHandler}
+        >
+          {({ isSubmitting, setFieldValue, touched, errors, status }) => (
+            <Form>
+              <Modal.Body>
+                {status ? (
+                  <Alert variant={status.type}>{status.message}</Alert>
+                ) : (
+                  ''
+                )}
+                <FormBS.File
+                  accept='image/*'
+                  onChange={(e) =>
+                    setFieldValue('cover_picture', e.target.files[0])
+                  }
+                ></FormBS.File>
+                {touched.cover_picture && errors.cover_picture ? (
+                  <FormBS.Text className='text-danger'>
+                    {errors.cover_picture}
+                  </FormBS.Text>
+                ) : null}
+              </Modal.Body>
+              <Modal.Footer>
+                <FilledButton
+                  variant='secondary'
+                  onClick={handleCoverPictureUploadModalClose}
+                >
+                  Close
+                </FilledButton>
+                <FilledButton variant='primary' type='submit'>
+                  Upload
+                </FilledButton>
+              </Modal.Footer>
+            </Form>
+          )}
+        </Formik>
+        <FormBS onSubmit={coverPictureUploadHandler}></FormBS>
       </Modal>
     </>
   );
 };
 
-export default UserCoverPicture;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCoverPicture: (cover_picture) =>
+      dispatch(updateUserCoverPictureAction(cover_picture)),
+  };
+};
+export default connect(null, mapDispatchToProps)(UserCoverPicture);

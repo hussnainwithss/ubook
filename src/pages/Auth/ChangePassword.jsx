@@ -6,8 +6,9 @@ import { Formik, Form } from 'formik';
 import TextField from 'elements/Form/TextField';
 import UserInfoAccordian from 'components/UserInfoAccordian';
 import { updateUserPasswordAction } from 'pages/Auth/ducks/actions';
-import ProfileContainer from 'elements/ProfileContainer';
+import { ProfileContainer } from 'elements/Profile';
 import FilledButton from 'elements/Button/FilledButton';
+import ProfileImagesSection from 'components/ProfileImagesSection';
 
 const ChangePassword = ({ updateUserPassword, user }) => {
   const [form_status, setFormStatus] = useState({
@@ -67,6 +68,8 @@ const ChangePassword = ({ updateUserPassword, user }) => {
   };
   return (
     <>
+      <ProfileImagesSection user={user} />
+
       <ProfileContainer>
         <Row>
           <Col md='4'>
@@ -107,6 +110,21 @@ const ChangePassword = ({ updateUserPassword, user }) => {
                         className='mb-2'
                         errorClassName='text-danger'
                         label='New Password'
+                        bottomText={
+                          <ul>
+                            <li>
+                              Your password can’t be too similar to your other
+                              personal information.
+                            </li>
+                            <li>
+                              Your password must contain at least 8 characters.
+                            </li>
+                            <li>
+                              Your password can’t be a commonly used password.
+                            </li>
+                            <li>Your password can’t be entirely numeric.</li>
+                          </ul>
+                        }
                       />
                       <TextField
                         type='password'
