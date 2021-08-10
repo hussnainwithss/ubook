@@ -1,4 +1,4 @@
 {
-    "singleQuote":true,
-    "parser":"babel"
+  "singleQuote": true,
+  "jsxSingleQuote": true
 }
