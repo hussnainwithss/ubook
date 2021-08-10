@@ -18,6 +18,7 @@ const Dashboard = ({
   authUser,
   authUserPosts,
 }) => {
+  const [showAlert, setShowAlert] = useState(false);
   const [posts, setPosts] = useState([]);
   const [postStatus, setPostStatus] = useState({});
   const [user, setUser] = useState({});
@@ -28,9 +29,7 @@ const Dashboard = ({
         .then((response) => {
           setPosts(response);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     } else {
       fetchAuthUserPosts().then((response) => response);
     }
@@ -66,14 +65,21 @@ const Dashboard = ({
                       <UserInfoAccordian userInfo={authUser.profile} />
                     </Col>
                     <Col md='8'>
-                      {postStatus.type !== '' ? (
-                        <Alert variant={postStatus.type}>
+                      {postStatus.type !== '' && showAlert ? (
+                        <Alert
+                          variant={postStatus.type}
+                          onClose={() => setShowAlert(false)}
+                          dismissible
+                        >
                           {postStatus.message}
                         </Alert>
                       ) : (
                         ''
                       )}
-                      <CreatePostPrompt setPostStatus={setPostStatus} />
+                      <CreatePostPrompt
+                        setPostStatus={setPostStatus}
+                        setShowAlert={setShowAlert}
+                      />
                       {authUserPosts && (
                         <>
                           {' '}

@@ -11,7 +11,6 @@ const Search = () => {
 
   const search_param = query.get('search');
   const [value, setValue] = useState('');
-  console.log('this is my search query outside filter', search_param);
   useEffect(() => {}, [value]);
   const [searchResults, setSearchResults] = useState([]);
   const [hometownFilters, setHometownFilters] = useState([]);

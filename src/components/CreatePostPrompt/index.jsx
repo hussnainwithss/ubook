@@ -8,7 +8,7 @@ import { addUserPostAction } from 'pages/Profile/ducks/actions';
 import FilledButton from 'elements/Button/FilledButton';
 
 const successNotification = 'Post Created Successfully.';
-const CreatePostPrompt = ({ createPost, setPostStatus }) => {
+const CreatePostPrompt = ({ createPost, setPostStatus, setShowAlert }) => {
   const initialValues = {
     content: '',
     image: null,
@@ -35,6 +35,7 @@ const CreatePostPrompt = ({ createPost, setPostStatus }) => {
         resetForm();
         document.getElementById('post-input').value = null;
         setSubmitting(false);
+        setShowAlert(true);
       })
       .catch((error) => {
         if (error && error.message)
@@ -45,6 +46,7 @@ const CreatePostPrompt = ({ createPost, setPostStatus }) => {
           fieldErrors.image = error.response.data.image[0];
         setErrors(fieldErrors);
         setSubmitting(false);
+        setShowAlert(true);
       });
   }
 
