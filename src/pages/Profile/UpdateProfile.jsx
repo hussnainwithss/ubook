@@ -133,7 +133,7 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
   };
   return (
     <>
-      <ProfileImagesSection user={user} />
+      <ProfileImagesSection user={user} allowEdit={true} />
 
       <ProfileContainer>
         <Row>

@@ -69,7 +69,7 @@ const ChangePassword = ({ updateUserPassword, user }) => {
   };
   return (
     <>
-      <ProfileImagesSection user={user} />
+      <ProfileImagesSection user={user} allowEdit={true} />
 
       <ProfileContainer>
         <Row>
