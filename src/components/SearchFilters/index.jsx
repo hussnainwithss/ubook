@@ -2,10 +2,9 @@ import React from 'react';
 import { Card, Row, Col, Form as FormBS, Spinner } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useHistory } from 'react-router';
 import { SelectField } from 'elements/Form';
 import { FilledButton } from 'elements/Button';
-import useQuery from 'utils/useQuery';
+import { history } from 'App';
 
 const SearchFilters = ({
   workFilters,
@@ -13,9 +12,6 @@ const SearchFilters = ({
   hometownFilters,
   setForceRerender,
 }) => {
-  const query = useQuery();
-  const searchParams = query.get('search');
-
   const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
   const initialValues = {
     hometown: '',
@@ -23,7 +19,6 @@ const SearchFilters = ({
     education: '',
     gender: '',
     relationship_status: '',
-    search: searchParams,
   };
   const validationSchema = Yup.object({
     hometown: Yup.string().oneOf(hometownFilters),
@@ -32,18 +27,18 @@ const SearchFilters = ({
     gender: Yup.string().oneOf(['Male', 'Female', 'Others']),
     relationship_status: Yup.string().oneOf(RELATIONSHIP_STATUES),
   });
-
-  const history = useHistory();
-
   const searchFormResetHandler = () => {
-    console.log('this is my search query inside filter', searchParams);
-    setForceRerender((value) => value + 1);
-    history.push(`/search/?search=${searchParams}`);
+    history.push(
+      `/search/?search=${new URLSearchParams(history.location.search).get(
+        'search'
+      )}`
+    );
   };
   const searchFormSubmitHandler = (values, { setSubmitting }) => {
-    const { hometown, work, education, gender, relationship_status, search } =
-      values;
-    const updatedQueryParams = new URLSearchParams({ search });
+    const { hometown, work, education, gender, relationship_status } = values;
+    const updatedQueryParams = new URLSearchParams({
+      search: new URLSearchParams(history.location.search).get('search'),
+    });
     if (hometown) updatedQueryParams.append('hometown', hometown);
     if (work) updatedQueryParams.append('work', work);
     if (education) updatedQueryParams.append('education', education);
