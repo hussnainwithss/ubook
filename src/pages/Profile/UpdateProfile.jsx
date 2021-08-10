@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { Card, Alert, Row, Col, Form as FormBS } from 'react-bootstrap';
+import {
+  Card,
+  Alert,
+  Row,
+  Col,
+  Form as FormBS,
+  Spinner,
+} from 'react-bootstrap';
 import { updateAuthUserInfoAction } from 'pages/Auth/ducks/actions';
 import TextField from 'elements/Form/TextField';
 import SelectField from 'elements/Form/SelectField';
@@ -61,8 +68,8 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
             message: successNotification,
             type: 'success',
           });
-          setSubmitting(false);
         }
+        setSubmitting(false);
       })
       .catch((error) => {
         let fieldError = {};
@@ -151,7 +158,7 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
                   onSubmit={handleSubmit}
                   validationSchema={validationSchema}
                 >
-                  {({ values, touched, errors }) => (
+                  {({ values, touched, errors, isSubmitting }) => (
                     <Form>
                       <FormBS.Row>
                         <Col>
@@ -301,8 +308,22 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
                           )
                         )}
                       </SelectField>
-                      <FilledButton variant='primary' type='Submit'>
-                        Update Profile
+                      <FilledButton
+                        variant='primary'
+                        type='Submit'
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <Spinner
+                            as='span'
+                            animation='border'
+                            size='sm'
+                            role='status'
+                            aria-hidden='true'
+                          />
+                        ) : (
+                          'Login'
+                        )}
                       </FilledButton>
                     </Form>
                   )}
