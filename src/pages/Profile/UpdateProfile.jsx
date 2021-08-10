@@ -322,7 +322,7 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
                             aria-hidden='true'
                           />
                         ) : (
-                          'Login'
+                          'Update Profile'
                         )}
                       </FilledButton>
                     </Form>
