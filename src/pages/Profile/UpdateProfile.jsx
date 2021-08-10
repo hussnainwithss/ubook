@@ -34,9 +34,23 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
   };
 
   const validationSchema = Yup.object({
-    first_name: Yup.string().min(3).required('First Name should not be empty.'),
-    last_name: Yup.string().min(3).required('Last Name should not be empty.'),
-    email: Yup.string().email().required('Emails should not be empty.'),
+    first_name: Yup.string()
+      .max(15)
+      .min(3)
+      .required('First Name should not be empty.'),
+    last_name: Yup.string()
+      .max(15)
+      .min(3)
+      .required('Last Name should not be empty.'),
+    email: Yup.string().max(50).email().required('Emails should not be empty.'),
+    profile: Yup.object({
+      bio: Yup.string().max(255),
+      birthday: Yup.date().max(new Date().toDateString()),
+      work: Yup.string().max(50),
+      education: Yup.string().max(50),
+      hometown: Yup.string().max(50),
+      relationship_status: Yup.string().oneOf(RELATIONSHIP_STATUES),
+    }),
   });
 
   const handleSubmit = (values, { setErrors, setSubmitting }) => {

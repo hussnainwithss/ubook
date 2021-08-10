@@ -18,8 +18,11 @@ const LoginForm = ({ authenticateUser, history }) => {
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().required('Required'),
+    username: Yup.string()
+      .max(50)
+      .email('Invalid email address')
+      .required('Required'),
+    password: Yup.string().max(30).required('Required'),
   });
 
   const handleSubmit = (values, { setStatus, setErrors, setSubmitting }) => {

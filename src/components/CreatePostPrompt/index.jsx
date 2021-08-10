@@ -15,22 +15,27 @@ const CreatePostPrompt = ({ createPost, setPostStatus }) => {
   };
   const validationSchema = Yup.object({
     image: Yup.mixed(),
-    content: Yup.string().when('image', {
-      is: (val) => (val === null ? true : false),
-      then: Yup.string().required('Post Cannot be Empty!'),
-    }),
+    content: Yup.string()
+      .when('image', {
+        is: (val) => (val === null ? true : false),
+        then: Yup.string().required('Post Cannot be Empty!'),
+      })
+      .max(255),
   });
   function createPostHandler(values, { resetForm, setSubmitting, setErrors }) {
     const { content, image } = values;
     let fieldErrors = {};
 
     createPost(content, image)
-      .then((response) =>
+      .then((response) => {
         setPostStatus({
           message: successNotification,
           type: 'success',
-        })
-      )
+        });
+        resetForm();
+        document.getElementById('post-input').value = null;
+        setSubmitting(false);
+      })
       .catch((error) => {
         if (error && error.message)
           setPostStatus({ message: error.message, type: 'danger' });
@@ -40,11 +45,7 @@ const CreatePostPrompt = ({ createPost, setPostStatus }) => {
           fieldErrors.image = error.response.data.image[0];
         setErrors(fieldErrors);
         setSubmitting(false);
-        return;
       });
-    if (fieldErrors === {}) resetForm();
-    document.getElementById('post-input').value = null;
-    setSubmitting(false);
   }
 
   return (

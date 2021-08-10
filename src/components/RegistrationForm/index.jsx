@@ -77,10 +77,14 @@ const RegistrationForm = ({ registerUser, history }) => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().min(8).required('Required'),
+    email: Yup.string()
+      .max(50)
+      .email('Invalid email address')
+      .required('Required'),
+    password: Yup.string().max(30).min(8).required('Required'),
     confirm_password: Yup.string()
       .min(8)
+      .max(30)
       .required('Required')
       .when('password', {
         is: (val) => (val && val.length > 0 ? true : false),

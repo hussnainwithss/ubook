@@ -21,9 +21,10 @@ const ChangePassword = ({ updateUserPassword, user }) => {
     confirm_new_password: '',
   };
   const validationSchema = Yup.object({
-    current_password: Yup.string().required('Required'),
-    new_password: Yup.string().min(8).required('Required'),
+    current_password: Yup.string().max(30).required('Required'),
+    new_password: Yup.string().max(30).min(8).required('Required'),
     confirm_new_password: Yup.string()
+      .max(30)
       .min(8)
       .required('Required')
       .when('new_password', {

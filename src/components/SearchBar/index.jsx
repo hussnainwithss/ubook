@@ -13,7 +13,7 @@ const SearchBar = () => {
     search: searchkeyword ? searchkeyword : '',
   };
   const validationSchema = Yup.object({
-    search: Yup.string().required('required'),
+    search: Yup.string().max(100).required('required'),
   });
   const handleSubmit = (values, { setSubmitting }) => {
     const { search } = values;
