@@ -7,7 +7,7 @@ const ProfileCard = ({ id, picture, name, hometown, age, gender, extras }) => {
   return (
     <Card className='mb-2'>
       <Card.Body>
-        <ProfileLink to={`/${AppRoutes.PROFILE.path}/${id}`}>
+        <ProfileLink to={AppRoutes.PROFILE.path.replace(':userId', id)}>
           <Row>
             <Col className='col-auto'>
               <ProfileImage
