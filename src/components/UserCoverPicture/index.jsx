@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { connect } from 'react-redux';
-import { Modal, Form as FormBS, Alert } from 'react-bootstrap';
+import { Modal, Form as FormBS, Alert, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { updateUserCoverPictureAction } from 'pages/Auth/ducks/actions';
 import {
@@ -18,7 +18,7 @@ const CoverPicture = ({ picture }) => {
   return <CoverImage className='w-100 ' src={picture ? picture : cover} />;
 };
 
-const UserCoverPicture = ({ picture, user, updateCoverPicture, allowEdit }) => {
+const UserCoverPicture = ({ user, updateCoverPicture, allowEdit }) => {
   const initialValues = { cover_picture: null };
   const validationSchema = Yup.object({
     cover_picture: Yup.mixed().required('Please Select Cover Picture First'),
@@ -40,6 +40,7 @@ const UserCoverPicture = ({ picture, user, updateCoverPicture, allowEdit }) => {
           type: 'success',
           message: 'Cover Picture Updated Successfully!',
         });
+        setSubmitting(false);
         setTimeout(() => {
           handleCoverPictureUploadModalClose();
         }, 1000);
@@ -54,8 +55,8 @@ const UserCoverPicture = ({ picture, user, updateCoverPicture, allowEdit }) => {
           fieldErrors.cover_picture = error.response.data.cover_picture;
         }
         setErrors(fieldErrors);
+        setSubmitting(false);
       });
-    setSubmitting(false);
   };
 
   return (
@@ -112,11 +113,26 @@ const UserCoverPicture = ({ picture, user, updateCoverPicture, allowEdit }) => {
                 <FilledButton
                   variant='secondary'
                   onClick={handleCoverPictureUploadModalClose}
+                  disabled={isSubmitting}
                 >
                   Close
                 </FilledButton>
-                <FilledButton variant='primary' type='submit'>
-                  Upload
+                <FilledButton
+                  variant='primary'
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <Spinner
+                      as='span'
+                      animation='border'
+                      size='sm'
+                      role='status'
+                      aria-hidden='true'
+                    />
+                  ) : (
+                    'Upload'
+                  )}
                 </FilledButton>
               </Modal.Footer>
             </Form>

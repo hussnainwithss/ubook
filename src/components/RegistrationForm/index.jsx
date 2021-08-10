@@ -44,6 +44,7 @@ const RegistrationForm = ({ registerUser, history }) => {
         if (resp) {
           history.push(AppRoutes.DASHBOARD.path);
         }
+        setSubmitting(false);
       })
       .catch((error) => {
         let fieldError = {};
@@ -72,8 +73,8 @@ const RegistrationForm = ({ registerUser, history }) => {
           fieldError.birthday = error.response.data.birthday;
         }
         setErrors(fieldError);
+        setSubmitting(false);
       });
-    setSubmitting(false);
   };
 
   const validationSchema = Yup.object({

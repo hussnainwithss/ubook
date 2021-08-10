@@ -31,6 +31,7 @@ const LoginForm = ({ authenticateUser, history }) => {
       .then((resp) => {
         if (resp) {
           history.push(AppRoutes.DASHBOARD.path);
+          setSubmitting(false);
         }
       })
       .catch((error) => {
@@ -44,8 +45,8 @@ const LoginForm = ({ authenticateUser, history }) => {
         }
 
         setErrors(fieldError);
+        setSubmitting(false);
       });
-    setSubmitting(false);
   };
   return (
     <Formik

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Form as FormBS, Alert } from 'react-bootstrap';
+import { Modal, Form as FormBS, Alert, Spinner } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -38,9 +38,9 @@ const UserProfilePicture = ({
   });
   const [showProfilePictureModal, setShowProfilePictureModal] = useState(false);
 
-  const handlePorfilePictureUploadModalShow = () =>
+  const handleProfilePictureUploadModalShow = () =>
     setShowProfilePictureModal(true);
-  const handlePorfilePictureUploadModalClose = () =>
+  const handleProfilePictureUploadModalClose = () =>
     setShowProfilePictureModal(false);
 
   const profilePictureUploadHandler = (
@@ -54,8 +54,9 @@ const UserProfilePicture = ({
           type: 'success',
           message: 'Cover Picture Updated Successfully!',
         });
+        setSubmitting(false);
         setTimeout(() => {
-          handlePorfilePictureUploadModalClose();
+          handleProfilePictureUploadModalClose();
         }, 1000);
       })
       .catch((error) => {
@@ -69,8 +70,8 @@ const UserProfilePicture = ({
           fieldErrors.profile_picture = error.response.data.profile_picture;
         }
         setErrors(fieldErrors);
+        setSubmitting(false);
       });
-    setSubmitting(false);
   };
   return (
     <>
@@ -81,7 +82,7 @@ const UserProfilePicture = ({
           </>
         ) : (
           <>
-            <OverlayButton onClick={handlePorfilePictureUploadModalShow}>
+            <OverlayButton onClick={handleProfilePictureUploadModalShow}>
               <ProfilePicture picture={user.profile.profile_picture} />
               <Overlay className='rounded-circle'>
                 <OverlayText>Update Profile Picture</OverlayText>
@@ -93,7 +94,7 @@ const UserProfilePicture = ({
       </ProfileDiv>
       <Modal
         show={showProfilePictureModal}
-        onHide={handlePorfilePictureUploadModalClose}
+        onHide={handleProfilePictureUploadModalClose}
       >
         <Modal.Header closeButton>
           <Modal.Title>Upload New Profile Picture</Modal.Title>
@@ -126,12 +127,27 @@ const UserProfilePicture = ({
               <Modal.Footer>
                 <FilledButton
                   variant='secondary'
-                  onClick={handlePorfilePictureUploadModalClose}
+                  onClick={handleProfilePictureUploadModalClose}
+                  disabled={isSubmitting}
                 >
                   Close
                 </FilledButton>
-                <FilledButton variant='primary' type='submit'>
-                  Upload
+                <FilledButton
+                  variant='primary'
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <Spinner
+                      as='span'
+                      animation='border'
+                      size='sm'
+                      role='status'
+                      aria-hidden='true'
+                    />
+                  ) : (
+                    'Upload'
+                  )}
                 </FilledButton>
               </Modal.Footer>
             </Form>
