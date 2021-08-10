@@ -110,7 +110,7 @@ export const updateAuthUserInfoAction = (updatedInfo) => (dispatch) => {
     });
 };
 
-export const fetchUserInfoAction = () => (dispatch) => {
+export const fetchUserInfoAction = (userId) => (dispatch) => {
   return getUserInfo()
     .then((resp) => {
       if (resp) {

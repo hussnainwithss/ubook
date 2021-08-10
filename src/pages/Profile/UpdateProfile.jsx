@@ -69,42 +69,42 @@ const UpdateProfile = ({ user, updateUserProfile }) => {
           error.response.data.profile &&
           error.response.data.profile.hometown
         ) {
-          fieldError.profile.hometown = error.response.profile.hometown;
+          fieldError.profile.hometown = error.response.data.profile.hometown;
         }
         if (
           error.response &&
           error.response.data.profile &&
           error.response.data.profile.work
         ) {
-          fieldError.profile.work = error.response.profile.work;
+          fieldError.profile.work = error.response.data.profile.work;
         }
         if (
           error.response &&
           error.response.data.profile &&
           error.response.data.profile.gender
         ) {
-          fieldError.profile.gender = error.response.profile.gender;
+          fieldError.profile.gender = error.response.data.profile.gender;
         }
         if (
           error.response &&
           error.response.data.profile &&
           error.response.data.profile.birthday
         ) {
-          fieldError.profile.birthday = error.response.profile.birthday;
+          fieldError.profile.birthday = error.response.data.profile.birthday;
         }
         if (
           error.response &&
           error.response.data.profile &&
           error.response.data.profile.bio
         ) {
-          fieldError.profile.bio = error.response.profile.bio;
+          fieldError.profile.bio = error.response.data.profile.bio;
         }
         if (
           error.response &&
           error.response.data.profile &&
           error.response.data.profile.education
         ) {
-          fieldError.profile.education = error.response.profile.education;
+          fieldError.profile.education = error.response.data.profile.education;
         }
         setErrors(fieldError);
         setSubmitting(false);

@@ -24,6 +24,7 @@ const ROUTES_OBJ = {
  */
 const getRoute = (routeName, params = {}) => {
   let url = ROUTES_OBJ[routeName];
+
   if (
     (routeName === 'userProfile' || routeName === 'userPost') &&
     params['id'] !== undefined

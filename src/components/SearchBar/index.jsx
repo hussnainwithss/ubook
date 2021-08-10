@@ -2,15 +2,22 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from 'elements/Form';
+import useQuery from 'utils/useQuery';
+import { AppRoutes } from 'routes';
+import { useHistory } from 'react-router';
 
 const SearchBar = () => {
+  const history = useHistory();
+  const searchkeyword = useQuery().get('search');
   const initialValues = {
-    search: '',
+    search: searchkeyword ? searchkeyword : '',
   };
   const validationSchema = Yup.object({
     search: Yup.string().required('required'),
   });
   const handleSubmit = (values, { setSubmitting }) => {
+    const { search } = values;
+    history.push(`${AppRoutes.SEARCH.path}/?search=${search}`);
     setSubmitting(false);
   };
 
@@ -20,7 +27,7 @@ const SearchBar = () => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {(isSubmitting, values) => (
+      {(isSubmitting) => (
         <Form className='d-flex'>
           <TextField
             name='search'
@@ -28,6 +35,7 @@ const SearchBar = () => {
             placeholder='Search UBook'
             errorClassName='text-warning'
             className='mb-0'
+            disabled={!isSubmitting}
           />
         </Form>
       )}

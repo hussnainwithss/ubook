@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Image, Row, Col } from 'react-bootstrap';
-import user from 'assets/imgs/user.png';
+import user from 'assets/img/user.png';
 import {
   ProfileBadge,
   ProfileBadgeText,

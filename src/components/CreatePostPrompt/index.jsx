@@ -1,11 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Card, Form as FormBS, Button } from 'react-bootstrap';
-import TextField from 'elements/Form/TextField';
+import { Card, Form as FormBS, Spinner } from 'react-bootstrap';
 import { CreatePostTextArea } from 'components/CreatePostPrompt/style';
+import { addUserPostAction } from 'pages/Profile/ducks/actions';
+import FilledButton from 'elements/Button/FilledButton';
 
-const CreatePostPrompt = () => {
+const successNotification = 'Post Created Successfully.';
+const CreatePostPrompt = ({ createPost, setPostStatus }) => {
   const initialValues = {
     content: '',
     image: null,
@@ -17,22 +20,32 @@ const CreatePostPrompt = () => {
       then: Yup.string().required('Post Cannot be Empty!'),
     }),
   });
-  //   function createPostHandler(e) {
-  //     e.preventDefault();
-  //     if (!content && !image) {
-  //       return;
-  //     }
-  //     createPost(content, image)
-  //       .then((response) => {
-  //         setNewPost(response.data);
-  //         dispatch(updateUserPosts(response.data));
-  //       })
-  //       .catch((error) => {
-  //         if (error.response) console.log(error.response.data);
-  //       });
-  //     setContent('');
-  //     e.target.image.value = null;
-  //   }
+  function createPostHandler(values, { resetForm, setSubmitting, setErrors }) {
+    const { content, image } = values;
+    let fieldErrors = {};
+
+    createPost(content, image)
+      .then((response) =>
+        setPostStatus({
+          message: successNotification,
+          type: 'success',
+        })
+      )
+      .catch((error) => {
+        if (error && error.message)
+          setPostStatus({ message: error.message, type: 'danger' });
+        if (error.response.data && error.response.data.content)
+          fieldErrors.content = error.response.data.content[0];
+        if (error.response.data && error.response.data.image)
+          fieldErrors.image = error.response.data.image[0];
+        setErrors(fieldErrors);
+        setSubmitting(false);
+        return;
+      });
+    if (fieldErrors === {}) resetForm();
+    document.getElementById('post-input').value = null;
+    setSubmitting(false);
+  }
 
   return (
     <Card className='mb-5'>
@@ -40,9 +53,9 @@ const CreatePostPrompt = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={createPostHandler}
         >
-          {({ setFieldValue, touched, errors }) => (
+          {({ setFieldValue, touched, errors, isSubmitting, values }) => (
             <Form>
               <FormBS.Row className='mb-2'>
                 <CreatePostTextArea
@@ -59,6 +72,7 @@ const CreatePostPrompt = () => {
                       : 'w-100 rounded'
                   }
                   haserror={errors.content}
+                  value={values.content}
                 />
                 {touched.content && errors.content ? (
                   <FormBS.Text className='text-danger'>
@@ -72,15 +86,30 @@ const CreatePostPrompt = () => {
                 name='image'
                 className='mb-3'
                 onChange={(e) => setFieldValue('image', e.target.files[0])}
+                id='post-input'
               />
               {touched.image && errors.image ? (
                 <FormBS.Text className='text-danger'>
                   {errors.image}
                 </FormBS.Text>
               ) : null}
-              <Button varriant='primary' type='submit'>
-                Post
-              </Button>
+              <FilledButton
+                variant='primary'
+                type='submit'
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <Spinner
+                    as='span'
+                    animation='border'
+                    size='sm'
+                    role='status'
+                    aria-hidden='true'
+                  />
+                ) : (
+                  'Post'
+                )}
+              </FilledButton>
             </Form>
           )}
         </Formik>
@@ -89,4 +118,10 @@ const CreatePostPrompt = () => {
   );
 };
 
-export default CreatePostPrompt;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createPost: (content, image) => dispatch(addUserPostAction(content, image)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CreatePostPrompt);

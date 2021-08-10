@@ -18,7 +18,7 @@ const CoverPicture = ({ picture }) => {
   return <CoverImage className='w-100 ' src={picture ? picture : cover} />;
 };
 
-const UserCoverPicture = ({ picture, user, updateCoverPicture }) => {
+const UserCoverPicture = ({ picture, user, updateCoverPicture, allowEdit }) => {
   const initialValues = { cover_picture: null };
   const validationSchema = Yup.object({
     cover_picture: Yup.mixed().required('Please Select Cover Picture First'),
@@ -48,11 +48,10 @@ const UserCoverPicture = ({ picture, user, updateCoverPicture }) => {
         let fieldErrors = {};
         if (error && error.message) {
           setStatus({ type: 'danger', message: error.message });
-          console.log(error.message);
         }
-        if (error.response && error.response.cover_picture) {
+        if (error.response && error.response.data.cover_picture) {
           setStatus({ type: 'danger', message: 'Something went wrong!' });
-          fieldErrors.cover_picture = error.response.cover_picture;
+          fieldErrors.cover_picture = error.response.data.cover_picture;
         }
         setErrors(fieldErrors);
       });
@@ -62,8 +61,8 @@ const UserCoverPicture = ({ picture, user, updateCoverPicture }) => {
   return (
     <>
       <CoverDiv>
-        {!user ? (
-          <CoverPicture picture={picture} />
+        {!allowEdit ? (
+          <CoverPicture picture={user.profile.cover_picture} />
         ) : (
           <OverlayButton
             onClick={handleCoverPictureUploadModalShow}

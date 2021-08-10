@@ -114,14 +114,13 @@ export const changeUserPassword = (
 
 export const createPost = (content, image) => {
   const data = new FormData();
-
   if (content) data.append('content', content);
   if (image) data.append('image', image, image.name);
   const route = getRoute('userPost');
   return postRequest(route, data);
 };
 
-export const getUserPost = (userId) => {
+export const getUserPosts = (userId) => {
   const route = getRoute('userPost', { id: userId });
   return getRequest(route);
 };

@@ -27,8 +27,8 @@ const ProfilePicture = ({ picture }) => {
 const UserProfilePicture = ({
   picture,
   user,
-  userAge,
   updateProfilePicture,
+  allowEdit,
 }) => {
   const initialValues = { profile_picture: null };
   const validationSchema = Yup.object({
@@ -64,9 +64,9 @@ const UserProfilePicture = ({
           setStatus({ type: 'danger', message: error.message });
           console.log(error.message);
         }
-        if (error.response && error.response.cover_picture) {
+        if (error.response && error.response.data.profile_picture) {
           setStatus({ type: 'danger', message: 'Something went wrong!' });
-          fieldErrors.profile_picture = error.response.profile_picture;
+          fieldErrors.profile_picture = error.response.data.profile_picture;
         }
         setErrors(fieldErrors);
       });
@@ -75,7 +75,7 @@ const UserProfilePicture = ({
   return (
     <>
       <ProfileDiv>
-        {!user ? (
+        {!allowEdit ? (
           <>
             <ProfilePicture picture={picture} />
           </>
